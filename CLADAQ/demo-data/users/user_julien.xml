@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<user name="user_julien">
+      <Username>Julien Ertveldt</Username>
+      <UserType>0</UserType>
+      <DBRights>0</DBRights>
+      <MachineRights>0</MachineRights>
+      <DAQRights>0</DAQRights>
+      <AppRights>0</AppRights>
+      <Password>Encrypt</Password>
+      <Email>Julien.Ertveldt@vub.be</Email>
+      <CreationDate>13/07/2020</CreationDate>
+</user>
+

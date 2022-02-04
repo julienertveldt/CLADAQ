@@ -31,6 +31,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CLADAQ));
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
@@ -50,13 +51,13 @@
             this.tb_Ip_Address = new System.Windows.Forms.TextBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panelBottom = new System.Windows.Forms.Panel();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lbStatus = new System.Windows.Forms.Label();
-            this.panelRBottom = new System.Windows.Forms.Panel();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.tbLog = new System.Windows.Forms.TextBox();
-            this.panelRTop = new System.Windows.Forms.Panel();
+            this.panelR = new System.Windows.Forms.Panel();
+            this.splitContainerRightTop = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.cpBar1 = new CircularProgressBar.CircularProgressBar();
             this.lbBar12 = new System.Windows.Forms.Label();
             this.cpBar12 = new CircularProgressBar.CircularProgressBar();
             this.lbBar11 = new System.Windows.Forms.Label();
@@ -80,10 +81,27 @@
             this.cpBar4 = new CircularProgressBar.CircularProgressBar();
             this.cpBar3 = new CircularProgressBar.CircularProgressBar();
             this.cpBar2 = new CircularProgressBar.CircularProgressBar();
-            this.cpBar1 = new CircularProgressBar.CircularProgressBar();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.btnSaveTemplate = new System.Windows.Forms.Button();
+            this.btnLoadTemplate = new System.Windows.Forms.Button();
+            this.btnCreateTemplate = new System.Windows.Forms.Button();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnXMLSave = new System.Windows.Forms.Button();
+            this.lblXMLFileName = new System.Windows.Forms.Label();
+            this.btnXMLLoad = new System.Windows.Forms.Button();
+            this.dgvProperties = new System.Windows.Forms.DataGridView();
+            this.tbLog = new System.Windows.Forms.TextBox();
             this.panelMid = new System.Windows.Forms.Panel();
+            this.panelMCenter = new System.Windows.Forms.Panel();
+            this.btnPlot = new System.Windows.Forms.Button();
+            this.panelMTop = new System.Windows.Forms.Panel();
+            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.panelMBottom = new System.Windows.Forms.Panel();
+            this.lblOPCVal2 = new System.Windows.Forms.Label();
+            this.lblOPCVal1 = new System.Windows.Forms.Label();
+            this.lblOPCStatus = new System.Windows.Forms.Label();
+            this.btnOPCCon = new System.Windows.Forms.Button();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.lbBar15 = new System.Windows.Forms.Label();
@@ -99,36 +117,55 @@
             this.cpBar18 = new CircularProgressBar.CircularProgressBar();
             this.lbBar17 = new System.Windows.Forms.Label();
             this.cpBar17 = new CircularProgressBar.CircularProgressBar();
-            this.panelMTop = new System.Windows.Forms.Panel();
-            this.chart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.cbAutoSize = new System.Windows.Forms.CheckBox();
             this.panelLeft = new System.Windows.Forms.Panel();
             this.panelLBottom = new System.Windows.Forms.Panel();
-            this.cbAutoSize = new System.Windows.Forms.CheckBox();
-            this.lb_DiagText_As2 = new System.Windows.Forms.Label();
-            this.lb_DiagText_As1 = new System.Windows.Forms.Label();
-            this.lb_Pos_As2 = new System.Windows.Forms.Label();
-            this.lb_Pos_As1 = new System.Windows.Forms.Label();
             this.panelLTop = new System.Windows.Forms.Panel();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.pnlMenuLeft = new System.Windows.Forms.Panel();
+            this.splitContainerMenuLeft = new System.Windows.Forms.SplitContainer();
+            this.treeView2 = new System.Windows.Forms.TreeView();
+            this.imageListTRV = new System.Windows.Forms.ImageList(this.components);
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.listView1 = new System.Windows.Forms.ListView();
             this.panelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panelBottom.SuspendLayout();
-            this.panelRBottom.SuspendLayout();
-            this.panel3.SuspendLayout();
-            this.panelRTop.SuspendLayout();
+            this.panelR.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerRightTop)).BeginInit();
+            this.splitContainerRightTop.Panel1.SuspendLayout();
+            this.splitContainerRightTop.Panel2.SuspendLayout();
+            this.splitContainerRightTop.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProperties)).BeginInit();
             this.panelMid.SuspendLayout();
+            this.panelMCenter.SuspendLayout();
+            this.panelMTop.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.panelMBottom.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.panelMTop.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             this.panelLeft.SuspendLayout();
             this.panelLBottom.SuspendLayout();
             this.panelLTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.pnlMenuLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMenuLeft)).BeginInit();
+            this.splitContainerMenuLeft.Panel1.SuspendLayout();
+            this.splitContainerMenuLeft.Panel2.SuspendLayout();
+            this.splitContainerMenuLeft.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelTop
@@ -147,7 +184,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1934, 116);
+            this.panelTop.Size = new System.Drawing.Size(1788, 110);
             this.panelTop.TabIndex = 0;
             this.panelTop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -191,7 +228,6 @@
             this.tbFilePath.Name = "tbFilePath";
             this.tbFilePath.Size = new System.Drawing.Size(383, 20);
             this.tbFilePath.TabIndex = 0;
-            this.tbFilePath.TextChanged += new System.EventHandler(this.tbFilePath_TextChanged);
             this.tbFilePath.KeyUp += new System.Windows.Forms.KeyEventHandler(this.tbFilePath_KeyUp);
             // 
             // cbSimulate
@@ -256,73 +292,74 @@
             // 
             // panelBottom
             // 
+            this.panelBottom.Controls.Add(this.progressBar1);
             this.panelBottom.Controls.Add(this.lbStatus);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 1022);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1934, 39);
+            this.panelBottom.Size = new System.Drawing.Size(1788, 39);
             this.panelBottom.TabIndex = 4;
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(1546, 6);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(374, 23);
+            this.progressBar1.TabIndex = 4;
             // 
             // lbStatus
             // 
             this.lbStatus.AutoSize = true;
+            this.lbStatus.BackColor = System.Drawing.SystemColors.ControlLight;
             this.lbStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbStatus.Location = new System.Drawing.Point(12, 12);
             this.lbStatus.Name = "lbStatus";
-            this.lbStatus.Size = new System.Drawing.Size(46, 18);
+            this.lbStatus.Size = new System.Drawing.Size(50, 18);
             this.lbStatus.TabIndex = 0;
-            this.lbStatus.Text = "label1";
+            this.lbStatus.Text = "Status";
             // 
-            // panelRBottom
+            // panelR
             // 
-            this.panelRBottom.Controls.Add(this.panel3);
-            this.panelRBottom.Controls.Add(this.panelRTop);
-            this.panelRBottom.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelRBottom.Location = new System.Drawing.Point(1552, 116);
-            this.panelRBottom.Name = "panelRBottom";
-            this.panelRBottom.Size = new System.Drawing.Size(382, 906);
-            this.panelRBottom.TabIndex = 5;
+            this.panelR.Controls.Add(this.splitContainerRightTop);
+            this.panelR.Dock = System.Windows.Forms.DockStyle.Right;
+            this.panelR.Location = new System.Drawing.Point(1406, 110);
+            this.panelR.Name = "panelR";
+            this.panelR.Size = new System.Drawing.Size(382, 912);
+            this.panelR.TabIndex = 5;
             // 
-            // panel3
+            // splitContainerRightTop
             // 
-            this.panel3.Controls.Add(this.tbLog);
-            this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 677);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(382, 229);
-            this.panel3.TabIndex = 1;
+            this.splitContainerRightTop.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerRightTop.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerRightTop.Name = "splitContainerRightTop";
+            this.splitContainerRightTop.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // tbLog
+            // splitContainerRightTop.Panel1
             // 
-            this.tbLog.Location = new System.Drawing.Point(3, 3);
-            this.tbLog.Multiline = true;
-            this.tbLog.Name = "tbLog";
-            this.tbLog.Size = new System.Drawing.Size(376, 223);
-            this.tbLog.TabIndex = 0;
-            this.tbLog.TextChanged += new System.EventHandler(this.tbLog_TextChanged);
+            this.splitContainerRightTop.Panel1.Controls.Add(this.tabControl1);
             // 
-            // panelRTop
+            // splitContainerRightTop.Panel2
             // 
-            this.panelRTop.Controls.Add(this.tabControl1);
-            this.panelRTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelRTop.Location = new System.Drawing.Point(0, 0);
-            this.panelRTop.Name = "panelRTop";
-            this.panelRTop.Size = new System.Drawing.Size(382, 620);
-            this.panelRTop.TabIndex = 0;
+            this.splitContainerRightTop.Panel2.Controls.Add(this.tbLog);
+            this.splitContainerRightTop.Size = new System.Drawing.Size(382, 912);
+            this.splitContainerRightTop.SplitterDistance = 607;
+            this.splitContainerRightTop.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(383, 620);
-            this.tabControl1.TabIndex = 3;
+            this.tabControl1.Size = new System.Drawing.Size(382, 607);
+            this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.cpBar1);
             this.tabPage1.Controls.Add(this.lbBar12);
             this.tabPage1.Controls.Add(this.cpBar12);
             this.tabPage1.Controls.Add(this.lbBar11);
@@ -346,13 +383,44 @@
             this.tabPage1.Controls.Add(this.cpBar4);
             this.tabPage1.Controls.Add(this.cpBar3);
             this.tabPage1.Controls.Add(this.cpBar2);
-            this.tabPage1.Controls.Add(this.cpBar1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(375, 594);
+            this.tabPage1.Size = new System.Drawing.Size(374, 581);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
+            // 
+            // cpBar1
+            // 
+            this.cpBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.cpBar1.AnimationSpeed = 500;
+            this.cpBar1.BackColor = System.Drawing.Color.Transparent;
+            this.cpBar1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cpBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cpBar1.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cpBar1.InnerMargin = 2;
+            this.cpBar1.InnerWidth = -1;
+            this.cpBar1.Location = new System.Drawing.Point(17, 8);
+            this.cpBar1.MarqueeAnimationSpeed = 2000;
+            this.cpBar1.Name = "cpBar1";
+            this.cpBar1.OuterColor = System.Drawing.Color.Gray;
+            this.cpBar1.OuterMargin = -25;
+            this.cpBar1.OuterWidth = 26;
+            this.cpBar1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(255)))));
+            this.cpBar1.ProgressWidth = 15;
+            this.cpBar1.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
+            this.cpBar1.Size = new System.Drawing.Size(100, 100);
+            this.cpBar1.StartAngle = 0;
+            this.cpBar1.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.cpBar1.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
+            this.cpBar1.SubscriptText = ".23";
+            this.cpBar1.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.cpBar1.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.cpBar1.SuperscriptText = "°C";
+            this.cpBar1.TabIndex = 23;
+            this.cpBar1.Text = "circularProgressBar4";
+            this.cpBar1.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
+            this.cpBar1.Value = 68;
             // 
             // lbBar12
             // 
@@ -826,75 +894,245 @@
             this.cpBar2.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.cpBar2.Value = 68;
             // 
-            // cpBar1
-            // 
-            this.cpBar1.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
-            this.cpBar1.AnimationSpeed = 500;
-            this.cpBar1.BackColor = System.Drawing.Color.Transparent;
-            this.cpBar1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cpBar1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cpBar1.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.cpBar1.InnerMargin = 2;
-            this.cpBar1.InnerWidth = -1;
-            this.cpBar1.Location = new System.Drawing.Point(16, 8);
-            this.cpBar1.MarqueeAnimationSpeed = 2000;
-            this.cpBar1.Name = "cpBar1";
-            this.cpBar1.OuterColor = System.Drawing.Color.Gray;
-            this.cpBar1.OuterMargin = -25;
-            this.cpBar1.OuterWidth = 26;
-            this.cpBar1.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(180)))), ((int)(((byte)(255)))));
-            this.cpBar1.ProgressWidth = 15;
-            this.cpBar1.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
-            this.cpBar1.Size = new System.Drawing.Size(100, 100);
-            this.cpBar1.StartAngle = 0;
-            this.cpBar1.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.cpBar1.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.cpBar1.SubscriptText = ".23";
-            this.cpBar1.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
-            this.cpBar1.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
-            this.cpBar1.SuperscriptText = "°C";
-            this.cpBar1.TabIndex = 1;
-            this.cpBar1.Text = "cpBar1";
-            this.cpBar1.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
-            this.cpBar1.Value = 68;
-            // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnSaveTemplate);
+            this.tabPage2.Controls.Add(this.btnLoadTemplate);
+            this.tabPage2.Controls.Add(this.btnCreateTemplate);
+            this.tabPage2.Controls.Add(this.comboBox2);
+            this.tabPage2.Controls.Add(this.comboBox1);
+            this.tabPage2.Controls.Add(this.btnXMLSave);
+            this.tabPage2.Controls.Add(this.lblXMLFileName);
+            this.tabPage2.Controls.Add(this.btnXMLLoad);
+            this.tabPage2.Controls.Add(this.dgvProperties);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(375, 594);
+            this.tabPage2.Size = new System.Drawing.Size(374, 581);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // btnSaveTemplate
+            // 
+            this.btnSaveTemplate.Location = new System.Drawing.Point(198, 33);
+            this.btnSaveTemplate.Name = "btnSaveTemplate";
+            this.btnSaveTemplate.Size = new System.Drawing.Size(90, 23);
+            this.btnSaveTemplate.TabIndex = 8;
+            this.btnSaveTemplate.Text = "Save";
+            this.btnSaveTemplate.UseVisualStyleBackColor = true;
+            // 
+            // btnLoadTemplate
+            // 
+            this.btnLoadTemplate.Location = new System.Drawing.Point(102, 33);
+            this.btnLoadTemplate.Name = "btnLoadTemplate";
+            this.btnLoadTemplate.Size = new System.Drawing.Size(90, 23);
+            this.btnLoadTemplate.TabIndex = 7;
+            this.btnLoadTemplate.Text = "Load";
+            this.btnLoadTemplate.UseVisualStyleBackColor = true;
+            // 
+            // btnCreateTemplate
+            // 
+            this.btnCreateTemplate.Location = new System.Drawing.Point(6, 33);
+            this.btnCreateTemplate.Name = "btnCreateTemplate";
+            this.btnCreateTemplate.Size = new System.Drawing.Size(90, 23);
+            this.btnCreateTemplate.TabIndex = 6;
+            this.btnCreateTemplate.Text = "Create";
+            this.btnCreateTemplate.UseVisualStyleBackColor = true;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(218, 6);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(148, 21);
+            this.comboBox2.TabIndex = 5;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(6, 6);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(158, 21);
+            this.comboBox1.TabIndex = 4;
+            // 
+            // btnXMLSave
+            // 
+            this.btnXMLSave.Location = new System.Drawing.Point(291, 77);
+            this.btnXMLSave.Name = "btnXMLSave";
+            this.btnXMLSave.Size = new System.Drawing.Size(75, 23);
+            this.btnXMLSave.TabIndex = 3;
+            this.btnXMLSave.Text = "Save XML";
+            this.btnXMLSave.UseVisualStyleBackColor = true;
+            // 
+            // lblXMLFileName
+            // 
+            this.lblXMLFileName.AutoSize = true;
+            this.lblXMLFileName.Location = new System.Drawing.Point(113, 82);
+            this.lblXMLFileName.Name = "lblXMLFileName";
+            this.lblXMLFileName.Size = new System.Drawing.Size(77, 13);
+            this.lblXMLFileName.TabIndex = 2;
+            this.lblXMLFileName.Text = "XML File name";
+            // 
+            // btnXMLLoad
+            // 
+            this.btnXMLLoad.Location = new System.Drawing.Point(6, 77);
+            this.btnXMLLoad.Name = "btnXMLLoad";
+            this.btnXMLLoad.Size = new System.Drawing.Size(75, 23);
+            this.btnXMLLoad.TabIndex = 1;
+            this.btnXMLLoad.Text = "Load XML";
+            this.btnXMLLoad.UseVisualStyleBackColor = true;
+            this.btnXMLLoad.Click += new System.EventHandler(this.btnLoadProps_Click);
+            // 
+            // dgvProperties
+            // 
+            this.dgvProperties.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProperties.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dgvProperties.Location = new System.Drawing.Point(3, 106);
+            this.dgvProperties.Name = "dgvProperties";
+            this.dgvProperties.Size = new System.Drawing.Size(368, 472);
+            this.dgvProperties.TabIndex = 0;
+            // 
+            // tbLog
+            // 
+            this.tbLog.Location = new System.Drawing.Point(7, 12);
+            this.tbLog.Multiline = true;
+            this.tbLog.Name = "tbLog";
+            this.tbLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbLog.Size = new System.Drawing.Size(371, 279);
+            this.tbLog.TabIndex = 0;
+            // 
             // panelMid
             // 
-            this.panelMid.Controls.Add(this.panelMBottom);
+            this.panelMid.Controls.Add(this.panelMCenter);
             this.panelMid.Controls.Add(this.panelMTop);
-            this.panelMid.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelMid.Location = new System.Drawing.Point(817, 116);
+            this.panelMid.Controls.Add(this.panelMBottom);
+            this.panelMid.Location = new System.Drawing.Point(929, 110);
             this.panelMid.Name = "panelMid";
-            this.panelMid.Size = new System.Drawing.Size(735, 906);
+            this.panelMid.Size = new System.Drawing.Size(477, 912);
             this.panelMid.TabIndex = 6;
+            // 
+            // panelMCenter
+            // 
+            this.panelMCenter.Controls.Add(this.btnPlot);
+            this.panelMCenter.Location = new System.Drawing.Point(0, 342);
+            this.panelMCenter.Name = "panelMCenter";
+            this.panelMCenter.Size = new System.Drawing.Size(478, 338);
+            this.panelMCenter.TabIndex = 6;
+            // 
+            // btnPlot
+            // 
+            this.btnPlot.Location = new System.Drawing.Point(55, 39);
+            this.btnPlot.Name = "btnPlot";
+            this.btnPlot.Size = new System.Drawing.Size(231, 75);
+            this.btnPlot.TabIndex = 0;
+            this.btnPlot.Text = "button1";
+            this.btnPlot.UseVisualStyleBackColor = true;
+            this.btnPlot.Click += new System.EventHandler(this.btnPlot_Click);
+            // 
+            // panelMTop
+            // 
+            this.panelMTop.Controls.Add(this.chart2);
+            this.panelMTop.Location = new System.Drawing.Point(3, 0);
+            this.panelMTop.Name = "panelMTop";
+            this.panelMTop.Size = new System.Drawing.Size(478, 346);
+            this.panelMTop.TabIndex = 5;
+            // 
+            // chart2
+            // 
+            this.chart2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.chart2.BorderlineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisX.LineWidth = 2;
+            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisX.MajorTickMark.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisX2.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
+            chartArea1.AxisY.LineWidth = 2;
+            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.LightGray;
+            chartArea1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            chartArea1.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea1);
+            this.chart2.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            legend1.ForeColor = System.Drawing.Color.LightGray;
+            legend1.Name = "Legend1";
+            this.chart2.Legends.Add(legend1);
+            this.chart2.Location = new System.Drawing.Point(0, 0);
+            this.chart2.Name = "chart2";
+            series1.BorderWidth = 3;
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chart2.Series.Add(series1);
+            this.chart2.Size = new System.Drawing.Size(478, 346);
+            this.chart2.TabIndex = 4;
+            this.chart2.Text = "chart2";
             // 
             // panelMBottom
             // 
-            this.panelMBottom.Controls.Add(this.tabControl2);
-            this.panelMBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelMBottom.Location = new System.Drawing.Point(0, 680);
+            this.panelMBottom.Controls.Add(this.lblOPCVal2);
+            this.panelMBottom.Controls.Add(this.lblOPCVal1);
+            this.panelMBottom.Controls.Add(this.lblOPCStatus);
+            this.panelMBottom.Controls.Add(this.btnOPCCon);
+            this.panelMBottom.Location = new System.Drawing.Point(0, 677);
             this.panelMBottom.Name = "panelMBottom";
-            this.panelMBottom.Size = new System.Drawing.Size(735, 226);
+            this.panelMBottom.Size = new System.Drawing.Size(478, 232);
             this.panelMBottom.TabIndex = 4;
+            // 
+            // lblOPCVal2
+            // 
+            this.lblOPCVal2.BackColor = System.Drawing.Color.White;
+            this.lblOPCVal2.Location = new System.Drawing.Point(20, 131);
+            this.lblOPCVal2.Name = "lblOPCVal2";
+            this.lblOPCVal2.Size = new System.Drawing.Size(335, 23);
+            this.lblOPCVal2.TabIndex = 4;
+            this.lblOPCVal2.Text = "OPC-UA not connected";
+            this.lblOPCVal2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOPCVal1
+            // 
+            this.lblOPCVal1.BackColor = System.Drawing.Color.White;
+            this.lblOPCVal1.Location = new System.Drawing.Point(20, 99);
+            this.lblOPCVal1.Name = "lblOPCVal1";
+            this.lblOPCVal1.Size = new System.Drawing.Size(335, 23);
+            this.lblOPCVal1.TabIndex = 3;
+            this.lblOPCVal1.Text = "OPC-UA not connected";
+            this.lblOPCVal1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblOPCStatus
+            // 
+            this.lblOPCStatus.BackColor = System.Drawing.Color.White;
+            this.lblOPCStatus.Location = new System.Drawing.Point(143, 32);
+            this.lblOPCStatus.Name = "lblOPCStatus";
+            this.lblOPCStatus.Size = new System.Drawing.Size(335, 23);
+            this.lblOPCStatus.TabIndex = 2;
+            this.lblOPCStatus.Text = "OPC-UA not connected";
+            this.lblOPCStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // btnOPCCon
+            // 
+            this.btnOPCCon.Location = new System.Drawing.Point(23, 28);
+            this.btnOPCCon.Name = "btnOPCCon";
+            this.btnOPCCon.Size = new System.Drawing.Size(114, 32);
+            this.btnOPCCon.TabIndex = 1;
+            this.btnOPCCon.Text = "Connect OPC";
+            this.btnOPCCon.UseVisualStyleBackColor = true;
+            this.btnOPCCon.Click += new System.EventHandler(this.btnOPCConnect_Click);
             // 
             // tabControl2
             // 
             this.tabControl2.Controls.Add(this.tabPage3);
             this.tabControl2.Controls.Add(this.tabPage4);
-            this.tabControl2.Location = new System.Drawing.Point(3, 3);
+            this.tabControl2.Location = new System.Drawing.Point(1, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(732, 223);
+            this.tabControl2.Size = new System.Drawing.Size(625, 223);
             this.tabControl2.TabIndex = 0;
             // 
             // tabPage3
@@ -910,7 +1148,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(724, 197);
+            this.tabPage3.Size = new System.Drawing.Size(617, 197);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "tabPage3";
             // 
@@ -1052,7 +1290,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(724, 197);
+            this.tabPage4.Size = new System.Drawing.Size(617, 197);
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "tabPage4";
             // 
@@ -1182,77 +1420,11 @@
             this.cpBar17.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.cpBar17.Value = 68;
             // 
-            // panelMTop
-            // 
-            this.panelMTop.Controls.Add(this.chart2);
-            this.panelMTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelMTop.Location = new System.Drawing.Point(0, 0);
-            this.panelMTop.Name = "panelMTop";
-            this.panelMTop.Size = new System.Drawing.Size(735, 620);
-            this.panelMTop.TabIndex = 3;
-            // 
-            // chart2
-            // 
-            this.chart2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.chart2.BorderlineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisX.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisX.LineWidth = 2;
-            chartArea1.AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisX.MajorTickMark.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisX2.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.LineColor = System.Drawing.Color.White;
-            chartArea1.AxisY.LineWidth = 2;
-            chartArea1.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.LightGray;
-            chartArea1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            chartArea1.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea1);
-            legend1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            legend1.ForeColor = System.Drawing.Color.LightGray;
-            legend1.Name = "Legend1";
-            this.chart2.Legends.Add(legend1);
-            this.chart2.Location = new System.Drawing.Point(3, 0);
-            this.chart2.Name = "chart2";
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart2.Series.Add(series1);
-            this.chart2.Size = new System.Drawing.Size(726, 433);
-            this.chart2.TabIndex = 2;
-            this.chart2.Text = "chart2";
-            this.chart2.Click += new System.EventHandler(this.chart2_Click);
-            // 
-            // panelLeft
-            // 
-            this.panelLeft.Controls.Add(this.panelLBottom);
-            this.panelLeft.Controls.Add(this.panelLTop);
-            this.panelLeft.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelLeft.Location = new System.Drawing.Point(0, 116);
-            this.panelLeft.Name = "panelLeft";
-            this.panelLeft.Size = new System.Drawing.Size(817, 906);
-            this.panelLeft.TabIndex = 7;
-            // 
-            // panelLBottom
-            // 
-            this.panelLBottom.Controls.Add(this.cbAutoSize);
-            this.panelLBottom.Controls.Add(this.lb_DiagText_As2);
-            this.panelLBottom.Controls.Add(this.lb_DiagText_As1);
-            this.panelLBottom.Controls.Add(this.lb_Pos_As2);
-            this.panelLBottom.Controls.Add(this.lb_Pos_As1);
-            this.panelLBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelLBottom.Location = new System.Drawing.Point(0, 480);
-            this.panelLBottom.Name = "panelLBottom";
-            this.panelLBottom.Size = new System.Drawing.Size(817, 426);
-            this.panelLBottom.TabIndex = 2;
-            // 
             // cbAutoSize
             // 
             this.cbAutoSize.AutoSize = true;
-            this.cbAutoSize.Location = new System.Drawing.Point(40, 10);
+            this.cbAutoSize.ForeColor = System.Drawing.Color.White;
+            this.cbAutoSize.Location = new System.Drawing.Point(30, 310);
             this.cbAutoSize.Name = "cbAutoSize";
             this.cbAutoSize.Size = new System.Drawing.Size(69, 17);
             this.cbAutoSize.TabIndex = 8;
@@ -1260,50 +1432,38 @@
             this.cbAutoSize.UseVisualStyleBackColor = true;
             this.cbAutoSize.CheckedChanged += new System.EventHandler(this.cbAutoSize_CheckedChanged);
             // 
-            // lb_DiagText_As2
+            // panelLeft
             // 
-            this.lb_DiagText_As2.Location = new System.Drawing.Point(37, 135);
-            this.lb_DiagText_As2.Name = "lb_DiagText_As2";
-            this.lb_DiagText_As2.Size = new System.Drawing.Size(100, 23);
-            this.lb_DiagText_As2.TabIndex = 3;
-            this.lb_DiagText_As2.Text = "lb_DiagText_As2";
+            this.panelLeft.Controls.Add(this.panelLBottom);
+            this.panelLeft.Controls.Add(this.panelLTop);
+            this.panelLeft.Location = new System.Drawing.Point(300, 110);
+            this.panelLeft.Name = "panelLeft";
+            this.panelLeft.Size = new System.Drawing.Size(626, 906);
+            this.panelLeft.TabIndex = 7;
             // 
-            // lb_DiagText_As1
+            // panelLBottom
             // 
-            this.lb_DiagText_As1.Location = new System.Drawing.Point(37, 112);
-            this.lb_DiagText_As1.Name = "lb_DiagText_As1";
-            this.lb_DiagText_As1.Size = new System.Drawing.Size(100, 23);
-            this.lb_DiagText_As1.TabIndex = 2;
-            this.lb_DiagText_As1.Text = "lb_DiagText_As1";
-            // 
-            // lb_Pos_As2
-            // 
-            this.lb_Pos_As2.Location = new System.Drawing.Point(37, 58);
-            this.lb_Pos_As2.Name = "lb_Pos_As2";
-            this.lb_Pos_As2.Size = new System.Drawing.Size(100, 23);
-            this.lb_Pos_As2.TabIndex = 1;
-            this.lb_Pos_As2.Text = "lb_Pos_As2";
-            // 
-            // lb_Pos_As1
-            // 
-            this.lb_Pos_As1.Location = new System.Drawing.Point(37, 35);
-            this.lb_Pos_As1.Name = "lb_Pos_As1";
-            this.lb_Pos_As1.Size = new System.Drawing.Size(100, 23);
-            this.lb_Pos_As1.TabIndex = 0;
-            this.lb_Pos_As1.Text = "lb_Pos_As1";
+            this.panelLBottom.Controls.Add(this.tabControl2);
+            this.panelLBottom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelLBottom.Location = new System.Drawing.Point(0, 680);
+            this.panelLBottom.Name = "panelLBottom";
+            this.panelLBottom.Size = new System.Drawing.Size(626, 226);
+            this.panelLBottom.TabIndex = 2;
             // 
             // panelLTop
             // 
+            this.panelLTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.panelLTop.Controls.Add(this.cbAutoSize);
             this.panelLTop.Controls.Add(this.chart1);
             this.panelLTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelLTop.Location = new System.Drawing.Point(0, 0);
             this.panelLTop.Name = "panelLTop";
-            this.panelLTop.Size = new System.Drawing.Size(817, 457);
+            this.panelLTop.Size = new System.Drawing.Size(626, 680);
             this.panelLTop.TabIndex = 0;
             // 
             // chart1
             // 
-            this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             this.chart1.BorderlineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
             chartArea2.AxisX.LineColor = System.Drawing.Color.White;
@@ -1316,14 +1476,14 @@
             chartArea2.AxisY.LineWidth = 2;
             chartArea2.AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
             chartArea2.AxisY.MajorTickMark.LineColor = System.Drawing.Color.LightGray;
-            chartArea2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            chartArea2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
             chartArea2.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea2);
             legend2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             legend2.ForeColor = System.Drawing.Color.LightGray;
             legend2.Name = "Legend1";
             this.chart1.Legends.Add(legend2);
-            this.chart1.Location = new System.Drawing.Point(3, 3);
+            this.chart1.Location = new System.Drawing.Point(3, 6);
             this.chart1.Name = "chart1";
             series2.BorderWidth = 3;
             series2.ChartArea = "ChartArea1";
@@ -1331,10 +1491,118 @@
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.chart1.Series.Add(series2);
-            this.chart1.Size = new System.Drawing.Size(811, 430);
+            this.chart1.Size = new System.Drawing.Size(620, 278);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             this.chart1.Click += new System.EventHandler(this.chart1_Click);
+            // 
+            // pnlMenuLeft
+            // 
+            this.pnlMenuLeft.Controls.Add(this.splitContainerMenuLeft);
+            this.pnlMenuLeft.Location = new System.Drawing.Point(3, 110);
+            this.pnlMenuLeft.Name = "pnlMenuLeft";
+            this.pnlMenuLeft.Size = new System.Drawing.Size(294, 912);
+            this.pnlMenuLeft.TabIndex = 8;
+            // 
+            // splitContainerMenuLeft
+            // 
+            this.splitContainerMenuLeft.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainerMenuLeft.Location = new System.Drawing.Point(0, 0);
+            this.splitContainerMenuLeft.Name = "splitContainerMenuLeft";
+            this.splitContainerMenuLeft.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainerMenuLeft.Panel1
+            // 
+            this.splitContainerMenuLeft.Panel1.Controls.Add(this.treeView2);
+            // 
+            // splitContainerMenuLeft.Panel2
+            // 
+            this.splitContainerMenuLeft.Panel2.Controls.Add(this.listView2);
+            this.splitContainerMenuLeft.Size = new System.Drawing.Size(294, 912);
+            this.splitContainerMenuLeft.SplitterDistance = 500;
+            this.splitContainerMenuLeft.TabIndex = 0;
+            // 
+            // treeView2
+            // 
+            this.treeView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.treeView2.ImageIndex = 0;
+            this.treeView2.ImageList = this.imageListTRV;
+            this.treeView2.Location = new System.Drawing.Point(0, 0);
+            this.treeView2.Name = "treeView2";
+            this.treeView2.SelectedImageIndex = 0;
+            this.treeView2.Size = new System.Drawing.Size(294, 500);
+            this.treeView2.TabIndex = 0;
+            // 
+            // imageListTRV
+            // 
+            this.imageListTRV.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListTRV.ImageStream")));
+            this.imageListTRV.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListTRV.Images.SetKeyName(0, "db.png");
+            this.imageListTRV.Images.SetKeyName(1, "BracketTO.png");
+            this.imageListTRV.Images.SetKeyName(2, "nozzle.png");
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3});
+            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView2.HideSelection = false;
+            this.listView2.Location = new System.Drawing.Point(0, 0);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(294, 408);
+            this.listView2.TabIndex = 0;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Name";
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Type";
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Last modified";
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(0, 0);
+            this.treeView1.Name = "treeView1";
+            this.treeView1.Size = new System.Drawing.Size(121, 97);
+            this.treeView1.TabIndex = 0;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel1.Controls.Add(this.treeView1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.White;
+            this.splitContainer1.Panel2.Controls.Add(this.listView1);
+            this.splitContainer1.Size = new System.Drawing.Size(294, 408);
+            this.splitContainer1.SplitterDistance = 178;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // listView1
+            // 
+            this.listView1.HideSelection = false;
+            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(121, 97);
+            this.listView1.TabIndex = 0;
+            this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // CLADAQ
             // 
@@ -1342,13 +1610,13 @@
             this.AutoScroll = true;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.ClientSize = new System.Drawing.Size(1924, 1078);
+            this.ClientSize = new System.Drawing.Size(1801, 1011);
+            this.Controls.Add(this.pnlMenuLeft);
             this.Controls.Add(this.panelLeft);
             this.Controls.Add(this.panelMid);
-            this.Controls.Add(this.panelRBottom);
+            this.Controls.Add(this.panelR);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelTop);
-            this.Cursor = System.Windows.Forms.Cursors.Arrow;
             this.Name = "CLADAQ";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -1361,24 +1629,39 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panelBottom.ResumeLayout(false);
             this.panelBottom.PerformLayout();
-            this.panelRBottom.ResumeLayout(false);
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
-            this.panelRTop.ResumeLayout(false);
+            this.panelR.ResumeLayout(false);
+            this.splitContainerRightTop.Panel1.ResumeLayout(false);
+            this.splitContainerRightTop.Panel2.ResumeLayout(false);
+            this.splitContainerRightTop.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerRightTop)).EndInit();
+            this.splitContainerRightTop.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProperties)).EndInit();
             this.panelMid.ResumeLayout(false);
+            this.panelMCenter.ResumeLayout(false);
+            this.panelMTop.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.panelMBottom.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            this.panelMTop.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             this.panelLeft.ResumeLayout(false);
             this.panelLBottom.ResumeLayout(false);
-            this.panelLBottom.PerformLayout();
             this.panelLTop.ResumeLayout(false);
+            this.panelLTop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
+            this.pnlMenuLeft.ResumeLayout(false);
+            this.splitContainerMenuLeft.Panel1.ResumeLayout(false);
+            this.splitContainerMenuLeft.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainerMenuLeft)).EndInit();
+            this.splitContainerMenuLeft.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1388,12 +1671,9 @@
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panelBottom;
-        private System.Windows.Forms.Panel panelRBottom;
-        private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Panel panelRTop;
+        private System.Windows.Forms.Panel panelR;
         private System.Windows.Forms.Panel panelMid;
         private System.Windows.Forms.Panel panelMBottom;
-        private System.Windows.Forms.Panel panelMTop;
         private System.Windows.Forms.Panel panelLeft;
         private System.Windows.Forms.Panel panelLTop;
         private System.Windows.Forms.Label lbBar15;
@@ -1402,6 +1682,40 @@
         private System.Windows.Forms.Label lbBar13;
         private CircularProgressBar.CircularProgressBar cpBar14;
         private CircularProgressBar.CircularProgressBar cpBar13;
+        private System.Windows.Forms.Panel panelLBottom;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label lbBar18;
+        private CircularProgressBar.CircularProgressBar cpBar16;
+        private System.Windows.Forms.Label lbBar16;
+        private CircularProgressBar.CircularProgressBar cpBar18;
+        private System.Windows.Forms.Label lbBar17;
+        private CircularProgressBar.CircularProgressBar cpBar17;
+        private System.Windows.Forms.TextBox tb_Ip_Address;
+        private System.Windows.Forms.Button bt_Stop;
+        private System.Windows.Forms.Button bt_Connect;
+        private System.Windows.Forms.Button bt_Start;
+        private System.Windows.Forms.Label lbFilePath;
+        private System.Windows.Forms.TextBox tbFilePath;
+        private System.Windows.Forms.CheckBox cbSimulate;
+        private System.Windows.Forms.CheckBox cbAcquisition;
+        private System.Windows.Forms.CheckBox cbAutoSize;
+        private System.Windows.Forms.CheckBox cbWriteCSV;
+        private System.Windows.Forms.Label lbStatus;
+        private System.Windows.Forms.Panel pnlMenuLeft;
+        private System.Windows.Forms.SplitContainer splitContainerMenuLeft;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TreeView treeView2;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.SplitContainer splitContainerRightTop;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label lbBar12;
@@ -1428,35 +1742,27 @@
         private CircularProgressBar.CircularProgressBar cpBar3;
         private CircularProgressBar.CircularProgressBar cpBar2;
         private CircularProgressBar.CircularProgressBar cpBar1;
+        //private CladaqGUI.cpBar cpBar1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Panel panelLBottom;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-        private System.Windows.Forms.Label lbStatus;
-        public System.Windows.Forms.TextBox tbLog;
-        private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Label lbBar18;
-        private CircularProgressBar.CircularProgressBar cpBar16;
-        private System.Windows.Forms.Label lbBar16;
-        private CircularProgressBar.CircularProgressBar cpBar18;
-        private System.Windows.Forms.Label lbBar17;
-        private CircularProgressBar.CircularProgressBar cpBar17;
-        private System.Windows.Forms.TextBox tb_Ip_Address;
-        private System.Windows.Forms.Button bt_Stop;
-        private System.Windows.Forms.Button bt_Connect;
-        private System.Windows.Forms.Button bt_Start;
-        private System.Windows.Forms.Label lb_Pos_As1;
-        private System.Windows.Forms.Label lb_DiagText_As2;
-        private System.Windows.Forms.Label lb_DiagText_As1;
-        private System.Windows.Forms.Label lb_Pos_As2;
-        private System.Windows.Forms.Label lbFilePath;
-        private System.Windows.Forms.TextBox tbFilePath;
-        private System.Windows.Forms.CheckBox cbSimulate;
-        private System.Windows.Forms.CheckBox cbAcquisition;
-        private System.Windows.Forms.CheckBox cbAutoSize;
-        private System.Windows.Forms.CheckBox cbWriteCSV;
+        private System.Windows.Forms.DataGridView dgvProperties;
+        private System.Windows.Forms.Button btnXMLLoad;
+        private System.Windows.Forms.Label lblXMLFileName;
+        private System.Windows.Forms.Panel panelMCenter;
+        private System.Windows.Forms.Panel panelMTop;
+        private System.Windows.Forms.ImageList imageListTRV;
+        private System.Windows.Forms.Button btnXMLSave;
+        private System.Windows.Forms.Button btnCreateTemplate;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button btnSaveTemplate;
+        private System.Windows.Forms.Button btnLoadTemplate;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart2;
+        private System.Windows.Forms.Button btnPlot;
+        private System.Windows.Forms.Button btnOPCCon;
+        private System.Windows.Forms.Label lblOPCStatus;
+        private System.Windows.Forms.Label lblOPCVal1;
+        private System.Windows.Forms.Label lblOPCVal2;
+        public System.Windows.Forms.TextBox tbLog;
     }
 }
 

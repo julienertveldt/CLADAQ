@@ -18,5 +18,5 @@ namespace CLADAQ
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new CLADAQ());
         }
-    }
+    }   
 }

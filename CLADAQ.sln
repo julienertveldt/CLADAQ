@@ -3,11 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLADAQ", "CLADAQ\CLADAQ.csproj", "{D5514D94-516E-4718-AF35-1D11538D2842}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0E9100C-9D55-4753-884F-9127704D833C}"
 	ProjectSection(SolutionItems) = preProject
 		CLADAQ\helperclasses.cs = CLADAQ\helperclasses.cs
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CladaqLib", "CladaqLib\CladaqLib.csproj", "{FF6A26B3-234B-4A76-92A6-0E8A895E2094}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLADAQ", "CLADAQ\CLADAQ.csproj", "{D5514D94-516E-4718-AF35-1D11538D2842}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094} = {FF6A26B3-234B-4A76-92A6-0E8A895E2094}
 	EndProjectSection
 EndProject
 Global
@@ -20,18 +25,30 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|x64.ActiveCfg = Debug|x64
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|x64.Build.0 = Debug|x64
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|x86.ActiveCfg = Debug|x86
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Debug|x86.Build.0 = Debug|x86
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|x64.ActiveCfg = Release|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|x64.Build.0 = Release|Any CPU
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|x86.ActiveCfg = Release|x86
+		{FF6A26B3-234B-4A76-92A6-0E8A895E2094}.Release|x86.Build.0 = Release|x86
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|Any CPU.Build.0 = Debug|x64
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x64.ActiveCfg = Debug|x64
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x64.Build.0 = Debug|x64
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x86.Build.0 = Debug|Any CPU
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x86.ActiveCfg = Debug|x86
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Debug|x86.Build.0 = Debug|x86
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x64.ActiveCfg = Release|x64
 		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x64.Build.0 = Release|x64
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x86.ActiveCfg = Release|Any CPU
-		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x86.Build.0 = Release|Any CPU
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x86.ActiveCfg = Release|x86
+		{D5514D94-516E-4718-AF35-1D11538D2842}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

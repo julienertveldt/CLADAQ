@@ -111,6 +111,8 @@
             this.lbBar14 = new System.Windows.Forms.Label();
             this.cpBar14 = new CircularProgressBar.CircularProgressBar();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.lbBar19 = new System.Windows.Forms.Label();
+            this.cpBar19 = new CircularProgressBar.CircularProgressBar();
             this.lbBar18 = new System.Windows.Forms.Label();
             this.cpBar16 = new CircularProgressBar.CircularProgressBar();
             this.lbBar16 = new System.Windows.Forms.Label();
@@ -170,7 +172,7 @@
             // 
             // panelTop
             // 
-            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.panelTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.panelTop.Controls.Add(this.cbWriteCSV);
             this.panelTop.Controls.Add(this.lbFilePath);
             this.panelTop.Controls.Add(this.cbAcquisition);
@@ -184,7 +186,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1788, 110);
+            this.panelTop.Size = new System.Drawing.Size(1784, 110);
             this.panelTop.TabIndex = 0;
             this.panelTop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -297,7 +299,7 @@
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 1022);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1788, 39);
+            this.panelBottom.Size = new System.Drawing.Size(1784, 39);
             this.panelBottom.TabIndex = 4;
             // 
             // progressBar1
@@ -322,7 +324,7 @@
             // 
             this.panelR.Controls.Add(this.splitContainerRightTop);
             this.panelR.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelR.Location = new System.Drawing.Point(1406, 110);
+            this.panelR.Location = new System.Drawing.Point(1402, 110);
             this.panelR.Name = "panelR";
             this.panelR.Size = new System.Drawing.Size(382, 912);
             this.panelR.TabIndex = 5;
@@ -358,7 +360,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.tabPage1.Controls.Add(this.cpBar1);
             this.tabPage1.Controls.Add(this.lbBar12);
             this.tabPage1.Controls.Add(this.cpBar12);
@@ -991,6 +993,7 @@
             this.dgvProperties.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgvProperties.Location = new System.Drawing.Point(3, 106);
             this.dgvProperties.Name = "dgvProperties";
+            this.dgvProperties.RowHeadersWidth = 82;
             this.dgvProperties.Size = new System.Drawing.Size(368, 472);
             this.dgvProperties.TabIndex = 0;
             // 
@@ -1015,6 +1018,7 @@
             // 
             // panelMCenter
             // 
+            this.panelMCenter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.panelMCenter.Controls.Add(this.btnPlot);
             this.panelMCenter.Location = new System.Drawing.Point(0, 342);
             this.panelMCenter.Name = "panelMCenter";
@@ -1041,8 +1045,7 @@
             // 
             // chart2
             // 
-            this.chart2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.chart2.BorderlineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chart2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             chartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
             chartArea1.AxisX.LineColor = System.Drawing.Color.White;
             chartArea1.AxisX.LineWidth = 2;
@@ -1076,6 +1079,7 @@
             // 
             // panelMBottom
             // 
+            this.panelMBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.panelMBottom.Controls.Add(this.lblOPCVal2);
             this.panelMBottom.Controls.Add(this.lblOPCVal1);
             this.panelMBottom.Controls.Add(this.lblOPCStatus);
@@ -1155,6 +1159,7 @@
             // lbBar15
             // 
             this.lbBar15.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar15.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar15.Location = new System.Drawing.Point(324, 149);
             this.lbBar15.Name = "lbBar15";
             this.lbBar15.Size = new System.Drawing.Size(103, 21);
@@ -1179,7 +1184,7 @@
             this.cpBar13.OuterMargin = -25;
             this.cpBar13.OuterWidth = 26;
             this.cpBar13.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(30)))), ((int)(((byte)(0)))));
-            this.cpBar13.ProgressWidth = 15;
+            this.cpBar13.ProgressWidth = 10;
             this.cpBar13.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar13.Size = new System.Drawing.Size(100, 100);
             this.cpBar13.StartAngle = 90;
@@ -1197,6 +1202,7 @@
             // lbBar13
             // 
             this.lbBar13.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar13.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar13.Location = new System.Drawing.Point(14, 149);
             this.lbBar13.Name = "lbBar13";
             this.lbBar13.Size = new System.Drawing.Size(103, 21);
@@ -1221,7 +1227,7 @@
             this.cpBar15.OuterMargin = -25;
             this.cpBar15.OuterWidth = 26;
             this.cpBar15.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(30)))), ((int)(((byte)(0)))));
-            this.cpBar15.ProgressWidth = 15;
+            this.cpBar15.ProgressWidth = 10;
             this.cpBar15.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar15.Size = new System.Drawing.Size(100, 100);
             this.cpBar15.StartAngle = 0;
@@ -1239,6 +1245,7 @@
             // lbBar14
             // 
             this.lbBar14.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar14.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar14.Location = new System.Drawing.Point(173, 149);
             this.lbBar14.Name = "lbBar14";
             this.lbBar14.Size = new System.Drawing.Size(103, 21);
@@ -1263,7 +1270,7 @@
             this.cpBar14.OuterMargin = -25;
             this.cpBar14.OuterWidth = 26;
             this.cpBar14.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(30)))), ((int)(((byte)(0)))));
-            this.cpBar14.ProgressWidth = 15;
+            this.cpBar14.ProgressWidth = 10;
             this.cpBar14.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar14.Size = new System.Drawing.Size(100, 100);
             this.cpBar14.StartAngle = 0;
@@ -1281,6 +1288,8 @@
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tabPage4.Controls.Add(this.lbBar19);
+            this.tabPage4.Controls.Add(this.cpBar19);
             this.tabPage4.Controls.Add(this.lbBar18);
             this.tabPage4.Controls.Add(this.cpBar16);
             this.tabPage4.Controls.Add(this.lbBar16);
@@ -1294,9 +1303,54 @@
             this.tabPage4.TabIndex = 1;
             this.tabPage4.Text = "tabPage4";
             // 
+            // lbBar19
+            // 
+            this.lbBar19.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar19.ForeColor = System.Drawing.SystemColors.HighlightText;
+            this.lbBar19.Location = new System.Drawing.Point(475, 149);
+            this.lbBar19.Name = "lbBar19";
+            this.lbBar19.Size = new System.Drawing.Size(103, 21);
+            this.lbBar19.TabIndex = 38;
+            this.lbBar19.Text = "label1";
+            this.lbBar19.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // cpBar19
+            // 
+            this.cpBar19.AnimationFunction = WinFormAnimation.KnownAnimationFunctions.Liner;
+            this.cpBar19.AnimationSpeed = 2000;
+            this.cpBar19.BackColor = System.Drawing.Color.Transparent;
+            this.cpBar19.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cpBar19.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cpBar19.InnerColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.cpBar19.InnerMargin = 2;
+            this.cpBar19.InnerWidth = -1;
+            this.cpBar19.Location = new System.Drawing.Point(479, 36);
+            this.cpBar19.MarqueeAnimationSpeed = 2000;
+            this.cpBar19.Maximum = 25;
+            this.cpBar19.Name = "cpBar19";
+            this.cpBar19.OuterColor = System.Drawing.Color.Gray;
+            this.cpBar19.OuterMargin = -25;
+            this.cpBar19.OuterWidth = 26;
+            this.cpBar19.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.cpBar19.ProgressWidth = 10;
+            this.cpBar19.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.cpBar19.Size = new System.Drawing.Size(100, 100);
+            this.cpBar19.StartAngle = 90;
+            this.cpBar19.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.cpBar19.SubscriptMargin = new System.Windows.Forms.Padding(0, -45, 20, 20);
+            this.cpBar19.SubscriptText = "";
+            this.cpBar19.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
+            this.cpBar19.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
+            this.cpBar19.SuperscriptText = "";
+            this.cpBar19.TabIndex = 37;
+            this.cpBar19.Text = "8";
+            this.cpBar19.TextMargin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.cpBar19.Value = 8;
+            // 
             // lbBar18
             // 
             this.lbBar18.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar18.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar18.Location = new System.Drawing.Point(324, 149);
             this.lbBar18.Name = "lbBar18";
             this.lbBar18.Size = new System.Drawing.Size(103, 21);
@@ -1321,24 +1375,24 @@
             this.cpBar16.OuterMargin = -25;
             this.cpBar16.OuterWidth = 26;
             this.cpBar16.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.cpBar16.ProgressWidth = 15;
+            this.cpBar16.ProgressWidth = 10;
             this.cpBar16.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar16.Size = new System.Drawing.Size(100, 100);
             this.cpBar16.StartAngle = 0;
             this.cpBar16.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar16.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.cpBar16.SubscriptText = ".23";
+            this.cpBar16.SubscriptText = "";
             this.cpBar16.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar16.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.cpBar16.SuperscriptText = "°C";
             this.cpBar16.TabIndex = 31;
-            this.cpBar16.Text = "circularProgressBar5";
             this.cpBar16.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.cpBar16.Value = 68;
             // 
             // lbBar16
             // 
             this.lbBar16.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar16.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar16.Location = new System.Drawing.Point(14, 149);
             this.lbBar16.Name = "lbBar16";
             this.lbBar16.Size = new System.Drawing.Size(103, 21);
@@ -1363,24 +1417,24 @@
             this.cpBar18.OuterMargin = -25;
             this.cpBar18.OuterWidth = 26;
             this.cpBar18.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.cpBar18.ProgressWidth = 15;
+            this.cpBar18.ProgressWidth = 10;
             this.cpBar18.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar18.Size = new System.Drawing.Size(100, 100);
             this.cpBar18.StartAngle = 0;
             this.cpBar18.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar18.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.cpBar18.SubscriptText = ".23";
+            this.cpBar18.SubscriptText = "";
             this.cpBar18.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar18.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.cpBar18.SuperscriptText = "°C";
             this.cpBar18.TabIndex = 35;
-            this.cpBar18.Text = "circularProgressBar4";
             this.cpBar18.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.cpBar18.Value = 68;
             // 
             // lbBar17
             // 
             this.lbBar17.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbBar17.ForeColor = System.Drawing.SystemColors.HighlightText;
             this.lbBar17.Location = new System.Drawing.Point(173, 149);
             this.lbBar17.Name = "lbBar17";
             this.lbBar17.Size = new System.Drawing.Size(103, 21);
@@ -1405,18 +1459,17 @@
             this.cpBar17.OuterMargin = -25;
             this.cpBar17.OuterWidth = 26;
             this.cpBar17.ProgressColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.cpBar17.ProgressWidth = 15;
+            this.cpBar17.ProgressWidth = 10;
             this.cpBar17.SecondaryFont = new System.Drawing.Font("Microsoft Sans Serif", 36F);
             this.cpBar17.Size = new System.Drawing.Size(100, 100);
             this.cpBar17.StartAngle = 0;
             this.cpBar17.SubscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar17.SubscriptMargin = new System.Windows.Forms.Padding(10, -35, 0, 0);
-            this.cpBar17.SubscriptText = ".23";
+            this.cpBar17.SubscriptText = "";
             this.cpBar17.SuperscriptColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(166)))), ((int)(((byte)(166)))));
             this.cpBar17.SuperscriptMargin = new System.Windows.Forms.Padding(10, 35, 0, 0);
             this.cpBar17.SuperscriptText = "°C";
             this.cpBar17.TabIndex = 32;
-            this.cpBar17.Text = "circularProgressBar4";
             this.cpBar17.TextMargin = new System.Windows.Forms.Padding(8, 8, 0, 0);
             this.cpBar17.Value = 68;
             // 
@@ -1452,7 +1505,7 @@
             // 
             // panelLTop
             // 
-            this.panelLTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
+            this.panelLTop.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             this.panelLTop.Controls.Add(this.cbAutoSize);
             this.panelLTop.Controls.Add(this.chart1);
             this.panelLTop.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1463,8 +1516,7 @@
             // 
             // chart1
             // 
-            this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(33)))), ((int)(((byte)(33)))));
-            this.chart1.BorderlineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.chart1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(70)))), ((int)(((byte)(70)))), ((int)(((byte)(70)))));
             chartArea2.AxisX.LabelStyle.ForeColor = System.Drawing.Color.LightGray;
             chartArea2.AxisX.LineColor = System.Drawing.Color.White;
             chartArea2.AxisX.LineWidth = 2;
@@ -1494,7 +1546,6 @@
             this.chart1.Size = new System.Drawing.Size(620, 278);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
-            this.chart1.Click += new System.EventHandler(this.chart1_Click);
             // 
             // pnlMenuLeft
             // 
@@ -1683,7 +1734,7 @@
         private CircularProgressBar.CircularProgressBar cpBar14;
         private CircularProgressBar.CircularProgressBar cpBar13;
         private System.Windows.Forms.Panel panelLBottom;
-        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        public System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
@@ -1762,7 +1813,9 @@
         private System.Windows.Forms.Label lblOPCStatus;
         private System.Windows.Forms.Label lblOPCVal1;
         private System.Windows.Forms.Label lblOPCVal2;
-        public System.Windows.Forms.TextBox tbLog;
+        public  System.Windows.Forms.TextBox tbLog;
+        private System.Windows.Forms.Label lbBar19;
+        private CircularProgressBar.CircularProgressBar cpBar19;
     }
 }
 

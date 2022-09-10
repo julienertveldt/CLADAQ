@@ -1370,46 +1370,7 @@ namespace CLADAQ
 
         }
 
-        //private async void btnOPCConnect_Click(object sender, EventArgs e)
-        //public async Task connectOPC()
-        // {
-
-            //IOutput console = new ConsoleOutput();
-
-            TimeSpan t1 = Global.sw.Elapsed;
-            //console.WriteLine(t1.ToString(@"ss\:FFFFFF\.") + " :OPC UA Console Reference Client");
-            //try
-            //{
-            //    // Define the UA Client application
-            //    ApplicationInstance application = new ApplicationInstance();
-            //    application.ApplicationName = "Quickstart Console Reference Client";
-            //    application.ApplicationType = ApplicationType.Client;
-
-            //    // load the application configuration.
-            //    await application.LoadApplicationConfiguration("ConsoleReferenceClient.Config.xml", silent: false);
-            //    // check the application certificate.
-            //    await application.CheckApplicationInstanceCertificate(silent: false, minimumKeySize: 0);
-
-            //    // create the UA Client object and connect to configured server.
-            //    UAClient uaClient = new UAClient(application.ApplicationConfiguration, console, ClientBase.ValidateResponse);
-            //    bool connected = await uaClient.ConnectAsync();
-            //    t1 = Global.sw.Elapsed;
-            //    if (connected)
-            //    {
-            //        //console.WriteLine(t1.ToString(@"ss\:FFFFFF\.") + " :Connected to MiCLAD MTX OPC-UA server!");
-            //    }
-            //    else
-            //    {
-            //        //console.WriteLine(t1.ToString(@"ss\:FFFFFF\.") + " :Could not connect to MiCLAD OPC-UA server!");
-            //    }
-            //    tbLog.Refresh();
-            //}
-            //catch (Exception ex)
-            //{
-            //    //console.WriteLine(ex.Message);
-            //    throw (ex);
-            //}
-       // }
+       
 
     }
 }

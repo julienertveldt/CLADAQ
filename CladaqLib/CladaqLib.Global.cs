@@ -19,11 +19,11 @@ namespace CladaqLib
         public static void InitializeApp()
         {
             //Buffer & Acquisition settings
-            intBuffS = 100;                            // position value buffer sent by PLC: same as in GlobVarContant XM22
+            intBuffS = 100;                          // position value buffer sent by PLC: same as in GlobVarContant XM22
             intAcqS = intBuffS*10;                   // acquisition buffer to be written to file
             intAcqDelay = 10;                          // ms delay for acquisition timer
             intIdxEnd = intBuffS;                      // number of values in pos data buffer
-            intNumBuffs = 2;                           // number of (cyclic) buffers to use.
+            intNumBuffs = 20;                           // number of (cyclic) buffers to use.
             intSimFS = 500;                            // Simulation frequency
             intNCh = 6;
 

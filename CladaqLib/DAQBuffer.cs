@@ -43,7 +43,7 @@ public class DAQBuffer
 
  // Constructor
     public DAQBuffer()
-    : this(2,1000)
+    : this(5,1000)
     { }
 
     public DAQBuffer(int buffs, int buffSize)
@@ -117,6 +117,9 @@ public class DAQBuffer
             {
                 FlowWatchTemp = -1;
             }
+
+            DateTime localDate = DateTime.Now;
+
             listAcqBuffer[b].Add(new DataRecord
             {
                 PosX = dblAcqCh[0, i],
@@ -128,8 +131,10 @@ public class DAQBuffer
                 LaserPcmd = dblAcqCh[4, i],
                 LaserPfdbck = dblAcqCh[5, i],
                 DataTime = TimeBuff[i].ToString(),
-                FlowWatch = FlowWatchTemp
-            });
+                FlowWatch = FlowWatchTemp,                
+                PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US")),
+                PrintTime = localDate.ToString(@"HH\:mm\:ss\.FFFFFF", new CultureInfo("EN-US"))
+        });
         }
 
         intAcqBuffPos = intAcqBuffPos + intBuffS;
@@ -141,26 +146,28 @@ public class DAQBuffer
 
         if (listAcqBuffer[b].Count >= (intAcqS))       // write to CSV if CSV buffer is full
         {
-
-            lock (listAcqBuffer[b]) ;
+            
             b_old = b;
             b = b + 1;      //select new buffer for acquisition
             if (b > intBuffs - 1)
                 b = 0;
 
-            if (writeCSV) //if write to CSV make copy of buffer
+            lock (listAcqBuffer[b_old])
             {
-                records = listAcqBuffer[b_old];
-                //records = listAcqBuffer[b];
+                if (writeCSV) //if write to CSV make copy of buffer
+                {
 
-                int success = 0;
-                
-                success = WriteBuffer(records);
+                    records = listAcqBuffer[b_old];
+                    //records = listAcqBuffer[b];
 
+                    int success = 0;
+
+
+                    success = WriteBuffer(records);
+
+                }
+                listAcqBuffer[b_old].RemoveRange(0, intAcqS);
             }
-
-            listAcqBuffer[b_old].RemoveRange(0, intAcqS);
-
         }
 
         return 1;
@@ -178,10 +185,11 @@ public class DAQBuffer
                 DateTime localDate = DateTime.Now;
                 dR.PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US"));
                 dR.PrintTime = localDate.ToString(@"HH\:mm\:ss\.FFFFFF", new CultureInfo("EN-US"));
-                records.Add(dR);
+                //records.Add(dR);
             }
 
-        lock (records) csv.WriteRecords(records);
+            //lock (listAcqBuffer[b_old]) ;
+            csv.WriteRecords(records);
             csv.Flush();
 
             return 1;

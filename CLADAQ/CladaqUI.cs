@@ -823,8 +823,14 @@ namespace CLADAQ
 
                     intTimeBuffOld = uiTime;
                     //this.OnValueChanged(null);
-                    CallUpdateBuffer(null,null);
+                    //CallUpdateBuffer(null,null);
 
+                    if (daqBuff != null)
+                    {
+                        daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
+                        //intTimeBuff = null;
+                        //dblBuff = null;
+                    }
 
 
                     ulong dummy = intTimeBuff[1];
@@ -851,30 +857,30 @@ namespace CLADAQ
 
         protected void CallUpdateBuffer(object sender, EventArgs e)
         {
+            
+            //try
+            //{
+            //    daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
+            //    if (bDebugLog)
+            //    {
+            //        Thread thread = Thread.CurrentThread;
+            //        lock (lockObj)
+            //        {
 
-            try
-            {
-                daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
-                if (bDebugLog)
-                {
-                    Thread thread = Thread.CurrentThread;
-                    lock (lockObj)
-                    {
-
-                        TimeSpan t1 = GlobalUI.sw.Elapsed;
-                        string msg = String.Format(t1.ToString(@"ss\:FF\.") + " :  Appended to buffer.");
-                        FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-                        msg = String.Format(" Acquisition event from Thread ID: {0}\n", thread.ManagedThreadId);
-                        FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TimeSpan t1 = GlobalUI.sw.Elapsed;
-                FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FF\.") + " :" + " Error appending to buffer." + Environment.NewLine);
-                throw;
-            }         
+            //            TimeSpan t1 = GlobalUI.sw.Elapsed;
+            //            string msg = String.Format(t1.ToString(@"ss\:FF\.") + " :  Appended to buffer.");
+            //            FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
+            //            msg = String.Format(" Acquisition event from Thread ID: {0}\n", thread.ManagedThreadId);
+            //            FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    TimeSpan t1 = GlobalUI.sw.Elapsed;
+            //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FF\.") + " :" + " Error appending to buffer." + Environment.NewLine);
+            //    throw;
+            //}         
         }
 
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
@@ -899,7 +905,7 @@ namespace CLADAQ
 
                 //// program wait for buffer to be filled
                 //simTimer.Start();
-                //dispTimer.Start();
+                dispTimer.Start();
 
                 simData.StartSimulator();  
                 bSimValues = true;

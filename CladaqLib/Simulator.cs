@@ -132,6 +132,8 @@ namespace CladaqLib
             if(daqBuff != null)
             {
                daqBuff.AppendToBuffer(dblBuff, intTimeBuff);
+                //intTimeBuff = null;
+                //dblBuff = null;
             }
 
             Thread.Sleep(Convert.ToInt16(dblSimDelay / 4));

@@ -39,7 +39,7 @@ namespace CLADAQ
         //constants (to check their need/properties)
         private static bool init_run = false;
     
-        public static bool bDebugLog = false;
+        public static bool bDebugLog = true;
 
         protected static bool bSimValues = false;
 
@@ -60,9 +60,10 @@ namespace CLADAQ
         public static uint intNCh = 6;
 
         private static System.Windows.Forms.Timer dispTimer;            // Display refresh timer
-        private static System.Windows.Forms.Timer acqTimer;             // Acquisition refresh timer
+        private static System.Windows.Forms.Timer acqTimer;                    // Acquisition refresh timer
+        //private static System.Timers.Timer acqTimer;
         public static System.Windows.Forms.Timer simTimer;              // Simulation data generation timer
-        private int intSimDelay;    // = intBuffS;                    // simulation timer delay (set equal to intBuffS)
+        private int intSimDelay;    // = intBuffS;                      // simulation timer delay (set equal to intBuffS)
         // ===================================
 
         //private static System.Threading.Timer aTimer;                 // Acquisition timer 
@@ -191,9 +192,22 @@ namespace CLADAQ
             dispTimer.Interval = intDispDelay;
             dispTimer.Tick += new EventHandler(this.OnDispTimedEvent);
 
-            acqTimer = new System.Windows.Forms.Timer();
-            acqTimer.Interval = intAcqDelay;
-            acqTimer.Tick += new EventHandler(this.OnAcquireTimedEvent);
+            //acqTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
+            //acqTimer.Change(0, intAcqDelay);
+
+            if (acqTimer == null)
+            {
+                acqTimer = new System.Windows.Forms.Timer();
+                acqTimer.Interval = intAcqDelay;
+                acqTimer.Tick += new EventHandler(this.OnAcquireTimedEvent);
+                //acqTimer = new System.Timers.Timer();
+                //acqTimer.Enabled = false;
+                //acqTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnAcquireTimedEvent);
+                //acqTimer.AutoReset = true;
+                //acqTimer.Interval = intAcqDelay;
+            }
+          
+               
 
             //simTimer = new System.Windows.Forms.Timer();
             //simTimer.Interval = intSimDelay;
@@ -322,6 +336,9 @@ namespace CLADAQ
             simData.dblSimDelay = 20;
 
             lbStatus.Text = "Ready ...";
+
+            Thread.Sleep(200);
+           
         }
 
 
@@ -368,19 +385,15 @@ namespace CLADAQ
 
         private void Task_2_DoWork()                 //  acquisition thread
         {
-
             //this.buffer = dblPosBuff[intBuffS - 1];
             while (true)
             {
                 if (PLC_Con.IsConnected && blPLCRunning)
                 {
-                 
-                    this.OnValueChanged(null);
-
+                    //this.OnValueChanged(null);
                 }
 
-                Thread.Sleep(50);
-
+                Thread.Sleep(100);
             }
 
         }
@@ -611,8 +624,9 @@ namespace CLADAQ
                     //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
 
                     // Vel & Power
-                    chart1.Series[0].Points.AddXY(dp.XValue + 1, dblAcqCh[5-1,i] * 6 / 1000); //dblCh1
-                    chart1.Series[1].Points.AddXY(dp.XValue + 1, dblAcqCh[6-1,i]); //dblCh2
+                    chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
+                    //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblAcqCh[1-1,i] * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
+                    //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblAcqCh[6-1,i]); //dblCh2
 
                     //chart2.Series[0].Points.AddXY(dblCh1[i], dblCh2[i]);
                     chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
@@ -625,10 +639,12 @@ namespace CLADAQ
                 FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
             }
 
-            while (chart1.Series[0].Points.Count > intPlotS)
+            for (int i = 0; i < chart1.Series.Count; i++)
             {
-                chart1.Series[0].Points.RemoveAt(0);
-                chart1.Series[1].Points.RemoveAt(0);
+                while (chart1.Series[i].Points.Count > intPlotS)
+                {
+                    chart1.Series[i].Points.RemoveAt(0);
+                }
             }
 
             while (chart2.Series[0].Points.Count > intPlotS)
@@ -762,13 +778,16 @@ namespace CLADAQ
 
 
 
-        protected virtual void OnAcquireTimedEvent(Object source, EventArgs myEventArgs)          // Acquisition timer
+        protected virtual void OnAcquireTimedEvent(Object source, EventArgs myEventArgs)          // Acquisition timerµ
+        //protected void OnAcquireTimedEvent(Object state)
         {
             if (PLC_Con.IsConnected && !bSimValues) //&& blPLCRunning
             {
-
-                TimeSpan t1 = GlobalUI.sw.Elapsed;
-                //FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Polling time buffer" + Environment.NewLine);
+                if (bDebugLog)
+                {
+                    TimeSpan t1 = GlobalUI.sw.Elapsed;
+                    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Polling time buffer" + Environment.NewLine);
+                }
 
 
                 uiTime = PLC_Con.Logic.ReadVariableBySymbol("Application.PlcVarGlobal.tTimeBufSent_gb");//tTimeBuf1_gb
@@ -776,8 +795,11 @@ namespace CLADAQ
                 if ((uiTime.SequenceEqual(intTimeBuffOld)) == false)
                 {
                     double[] tempBuf = new double[intBuffS];
-                    t1 = GlobalUI.sw.Elapsed;
-                    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Reading new axis position" + Environment.NewLine);
+                    if (bDebugLog)
+                    {
+                        TimeSpan t1 = GlobalUI.sw.Elapsed;
+                        FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Reading new axis position" + Environment.NewLine);
+                    }
 
                     string dummyPath = "";
                     for (int ii = 1; ii < (intNCh+1); ii += 1)
@@ -800,11 +822,16 @@ namespace CLADAQ
                     }
 
                     intTimeBuffOld = uiTime;
-                    this.OnValueChanged(null);
+                    //this.OnValueChanged(null);
+                    CallUpdateBuffer(null,null);
+
+
 
                     ulong dummy = intTimeBuff[1];
                 }
             }
+
+            
 
         }
 
@@ -822,13 +849,25 @@ namespace CLADAQ
         }
 
 
-        protected async void CallUpdateBuffer(object sender, EventArgs e)
+        protected void CallUpdateBuffer(object sender, EventArgs e)
         {
 
-            try { 
-                await daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
-                if (bDebugLog) { TimeSpan t1 = GlobalUI.sw.Elapsed; FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FF\.") + " :  Appended to buffer." + Environment.NewLine); }
-                
+            try
+            {
+                daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
+                if (bDebugLog)
+                {
+                    Thread thread = Thread.CurrentThread;
+                    lock (lockObj)
+                    {
+
+                        TimeSpan t1 = GlobalUI.sw.Elapsed;
+                        string msg = String.Format(t1.ToString(@"ss\:FF\.") + " :  Appended to buffer.");
+                        FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
+                        msg = String.Format(" Acquisition event from Thread ID: {0}\n", thread.ManagedThreadId);
+                        FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -875,15 +914,19 @@ namespace CLADAQ
             if (cbAcquisition.Checked == true)
             {
                 // Start the timer
+                if (acqTimer != null)
+                {
+                    acqTimer.Start();
+                    //acqTimer = new System.Threading.Timer( new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
+                    //acqTimer.Change(0, intAcqDelay);
+                }
                 cbSimulate.Checked = false;
-                acqTimer.Start();
                 dispTimer.Start();
 
-                
             }
             else
             {
-                acqTimer.Stop();
+                acqTimer.Dispose();
                 dispTimer.Stop();
 
             }

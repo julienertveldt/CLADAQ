@@ -186,7 +186,7 @@
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(1784, 110);
+            this.panelTop.Size = new System.Drawing.Size(1788, 110);
             this.panelTop.TabIndex = 0;
             this.panelTop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -299,7 +299,7 @@
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelBottom.Location = new System.Drawing.Point(0, 1022);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Size = new System.Drawing.Size(1784, 39);
+            this.panelBottom.Size = new System.Drawing.Size(1788, 39);
             this.panelBottom.TabIndex = 4;
             // 
             // progressBar1
@@ -324,7 +324,7 @@
             // 
             this.panelR.Controls.Add(this.splitContainerRightTop);
             this.panelR.Dock = System.Windows.Forms.DockStyle.Right;
-            this.panelR.Location = new System.Drawing.Point(1402, 110);
+            this.panelR.Location = new System.Drawing.Point(1406, 110);
             this.panelR.Name = "panelR";
             this.panelR.Size = new System.Drawing.Size(382, 912);
             this.panelR.TabIndex = 5;

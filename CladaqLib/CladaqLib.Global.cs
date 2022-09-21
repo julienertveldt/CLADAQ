@@ -28,8 +28,8 @@ namespace CladaqLib
             intNCh = 6;
 
             // GUI Settings;
-            intDispDelay = 50;                         // ms delay for screen refresh
-            intPlotS = 1000;                           // number of points to plot
+            intDispDelay = 100;                         // ms delay for screen refresh
+            intPlotS = 100;                           // number of points to plot
             intPlotSkip = 10;                          // plot 1 out of X samples
     }
 

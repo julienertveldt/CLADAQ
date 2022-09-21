@@ -99,7 +99,8 @@ public class DAQBuffer
         }
     }
 
-    public async Task<int> AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
+    //public async Task<int> AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
+    public int AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
     {
         int intBuffS = dblAcqCh.GetLength(1);
         int NChan = dblAcqCh.GetLength(0);
@@ -150,6 +151,7 @@ public class DAQBuffer
             if (writeCSV) //if write to CSV make copy of buffer
             {
                 records = listAcqBuffer[b_old];
+                //records = listAcqBuffer[b];
 
                 int success = 0;
                 

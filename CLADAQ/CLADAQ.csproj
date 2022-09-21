@@ -360,7 +360,6 @@
     </Compile>
     <Compile Include="CladaqGUI.cs" />
     <Compile Include="Browser.cs" />
-    <Compile Include="DAQ.cs" />
     <Compile Include="FormTools.cs" />
     <Compile Include="DataRecord.cs" />
     <Compile Include="helperclasses.cs" />

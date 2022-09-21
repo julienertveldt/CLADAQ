@@ -10,7 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using helperclasses;
-using commlpiLib;
+//using commlpiLib;
 using System.Timers;
 using CsvHelper;
 using System.IO;            // for streamWriter
@@ -39,7 +39,7 @@ namespace CLADAQ
         //constants (to check their need/properties)
         private static bool init_run = false;
     
-        public static bool bDebugLog = true;
+        public static bool bDebugLog = false;
 
         protected static bool bSimValues = false;
 
@@ -50,7 +50,7 @@ namespace CLADAQ
 
         private static int intAcqS;// = Global.intAcqS;                  // acquisition buffer to be written to file
 
-        private static int intAcqDelay; // = Global.intAcqDelay;         // ms delay for acquisition timer
+        private static uint intAcqDelay; // = Global.intAcqDelay;         // ms delay for acquisition timer
         private static int intIdxEnd;// = intBuffS;                      // number of values in pos data buffer
         private static int intNumBuffs;// = Global.intNumBuffs;          // number of (cyclic) buffers to use.
         private static int intPlotS;// = Global.intPlotS;                // number of points to plot
@@ -60,9 +60,7 @@ namespace CLADAQ
         public static uint intNCh = 6;
 
         private static System.Windows.Forms.Timer dispTimer;            // Display refresh timer
-        private static System.Windows.Forms.Timer acqTimer;                    // Acquisition refresh timer
-        //private static System.Timers.Timer acqTimer;
-        public static System.Windows.Forms.Timer simTimer;              // Simulation data generation timer
+
         private int intSimDelay;    // = intBuffS;                      // simulation timer delay (set equal to intBuffS)
         // ===================================
 
@@ -80,7 +78,7 @@ namespace CLADAQ
         //variables
         private double[] dblAxisPos = new double[20];               // axis positions
         private int job_Nr;                                         // threading task job (read, write)
-        private MlpiConnection PLC_Con = new MlpiConnection();
+        //private MlpiConnection PLC_Con = new MlpiConnection();
         private object Par = new object();
         private object Data = new object();
 
@@ -101,16 +99,16 @@ namespace CLADAQ
         private bool blPLCRunning = false;
         private bool bClientMTXConnected = false;
 
-        // define buffers comming from MLPI
-        protected static double[,] dblPosBuff = new double[intBuffS, intNCh];            // CNC positions + laser channel
-        public static string[] strTimeBuff = new string[intBuffS];                        // CNC timestamp
-        protected static UInt64[] intTimeBuff = new UInt64[intBuffS];
-        protected static UInt64[] intTimeBuffOld = new UInt64[intBuffS];                     //previous cnc timestamp
-        public static string[] strDateBuff = new string[intBuffS];
+        //// define buffers comming from MLPI [remove here]
+        //protected static double[,] dblPosBuff = new double[intBuffS, intNCh];            // CNC positions + laser channel
+        //public static string[] strTimeBuff = new string[intBuffS];                        // CNC timestamp
+        //protected static UInt64[] intTimeBuff = new UInt64[intBuffS];
+        //protected static UInt64[] intTimeBuffOld = new UInt64[intBuffS];                     //previous cnc timestamp
+        //public static string[] strDateBuff = new string[intBuffS];
 
 
         // Display buffers
-        protected double[,] dblAcqCh = new double[intNCh,intBuffS];
+       // protected double[,] dblAcqCh = new double[intNCh, intBuffS];
         protected double[] dblCh1 = new double[intBuffS];                             // Pos X
         protected double[] dblCh2 = new double[intBuffS];                             // Pos Y
         protected double[] dblCh3 = new double[intBuffS];                             // Pos Z
@@ -125,6 +123,7 @@ namespace CLADAQ
         public double buffer = new double();
 
         public static DAQBuffer daqBuff;
+        public static DAQ daqAcq;
 
         public static Simulator simData;
 
@@ -169,7 +168,7 @@ namespace CLADAQ
             // Simulator
             intSimDelay = intBuffS;
 
-        InitializeComponent();                      // Standard WinForms method for building Form
+            InitializeComponent();                      // Standard WinForms method for building Form
         }
 
         public class GlobalUI
@@ -194,19 +193,7 @@ namespace CLADAQ
 
             //acqTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
             //acqTimer.Change(0, intAcqDelay);
-
-            if (acqTimer == null)
-            {
-                acqTimer = new System.Windows.Forms.Timer();
-                acqTimer.Interval = intAcqDelay;
-                acqTimer.Tick += new EventHandler(this.OnAcquireTimedEvent);
-                //acqTimer = new System.Timers.Timer();
-                //acqTimer.Enabled = false;
-                //acqTimer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnAcquireTimedEvent);
-                //acqTimer.AutoReset = true;
-                //acqTimer.Interval = intAcqDelay;
-            }
-          
+   
                
 
             //simTimer = new System.Windows.Forms.Timer();
@@ -311,18 +298,11 @@ namespace CLADAQ
 
             //this.mainForm = this;
 
-            this.ValueChanged += this.CallUpdateBuffer;
             
-
             if (bSimValues)
                 intIdxEnd = intBuffS;
 
-            //for (int i = 0; i < intNumBuffs; i++)
-            //{
-            //    listAcqBuffer[i] = new List<DataRecord>();
-            //}     
-
-
+           
             DateTime now = DateTime.UtcNow;
             tbFilePath.Text = string.Concat("c:/temp/sim", now.ToString(@"_yyyy-MM-dd-HH-mm-ss-FF", culture), ".csv");
 
@@ -330,7 +310,11 @@ namespace CLADAQ
 
             Browser.PopulateTreeView(this.treeView2);
 
-            daqBuff = new DAQBuffer(intNumBuffs, intAcqS);
+            daqBuff = new DAQBuffer(intNumBuffs, intAcqS);      // buffer for CSV writing
+
+
+            daqAcq = new DAQ(daqBuff, intBuffS, intNCh, Global.intAcqDelay);
+
 
             simData = new Simulator(daqBuff);
             simData.dblSimDelay = 20;
@@ -358,7 +342,7 @@ namespace CLADAQ
 
             trd1.Start();
             //trd2.Start();
-            trd3.Start();
+            //trd3.Start();
 
             GlobalUI.sw = new Stopwatch();
             GlobalUI.sw.Start();
@@ -373,28 +357,24 @@ namespace CLADAQ
 
             //lock (lockObj)
 
-            Thread.Sleep(100);
+            //Thread.Sleep(100);
 
         }
 
         private void Task_1_DoWork()                // simulation thread
         {
 
-            Thread.Sleep(200);
+            //Thread.Sleep(200);
         }
 
         private void Task_2_DoWork()                 //  acquisition thread
         {
             //this.buffer = dblPosBuff[intBuffS - 1];
-            while (true)
-            {
-                if (PLC_Con.IsConnected && blPLCRunning)
-                {
-                    //this.OnValueChanged(null);
-                }
+            //while (true)
+            //{
 
-                Thread.Sleep(100);
-            }
+            //    Thread.Sleep(100);
+            //}
 
         }
 
@@ -432,60 +412,61 @@ namespace CLADAQ
             //TimeSpan t2 = (t1.Ticks - (t1.Ticks % 10000));
             FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"hh\:mm\:ss\.") + " Task 1 by " + msg + Environment.NewLine);
 
-            if (PLC_Con.IsConnected)
-            {
-                switch (job_Nr)
-                {
-                    case 1:      //read variables
+            // [remove here]
+            //if (PLC_Con.IsConnected)
+            //{
+            //    switch (job_Nr)
+            //    {
+            //        case 1:      //read variables
 
-                        Diagnosis diagnosis = PLC_Con.System.GetDisplayedDiagnosis();
-                        // add timestamp
-                        string strFormattedOutput = "";
-                        strFormattedOutput += "Time: "
-                            + diagnosis.dateTime.day.ToString("00") + "."
-                            + diagnosis.dateTime.month.ToString("00") + "."
-                            + diagnosis.dateTime.year.ToString("00") + " - "
-                            + diagnosis.dateTime.minute.ToString("00") + ":"
-                            + diagnosis.dateTime.hour.ToString("00") + ":"
-                            + diagnosis.dateTime.second.ToString("00") + System.Environment.NewLine;
-                        // add current state
-                        strFormattedOutput += "State: " + diagnosis.state.ToString() + System.Environment.NewLine;
-                        // add dispatcher of diagnosis
-                        strFormattedOutput += "Despatcher: " + diagnosis.despatcher.ToString() + System.Environment.NewLine;
-                        // add error number
-                        strFormattedOutput += "Number: 0x" + String.Format("{0:X}", diagnosis.number) + System.Environment.NewLine;
-                        // add description
-                        strFormattedOutput += "Text: " + diagnosis.text;
-                        // print to console
-                        //Console.WriteLine(strFormattedOutput);
-                        FormTools.AppendText(this, tbLog, strFormattedOutput + Environment.NewLine);
+            //            Diagnosis diagnosis = PLC_Con.System.GetDisplayedDiagnosis();
+            //            // add timestamp
+            //            string strFormattedOutput = "";
+            //            strFormattedOutput += "Time: "
+            //                + diagnosis.dateTime.day.ToString("00") + "."
+            //                + diagnosis.dateTime.month.ToString("00") + "."
+            //                + diagnosis.dateTime.year.ToString("00") + " - "
+            //                + diagnosis.dateTime.minute.ToString("00") + ":"
+            //                + diagnosis.dateTime.hour.ToString("00") + ":"
+            //                + diagnosis.dateTime.second.ToString("00") + System.Environment.NewLine;
+            //            // add current state
+            //            strFormattedOutput += "State: " + diagnosis.state.ToString() + System.Environment.NewLine;
+            //            // add dispatcher of diagnosis
+            //            strFormattedOutput += "Despatcher: " + diagnosis.despatcher.ToString() + System.Environment.NewLine;
+            //            // add error number
+            //            strFormattedOutput += "Number: 0x" + String.Format("{0:X}", diagnosis.number) + System.Environment.NewLine;
+            //            // add description
+            //            strFormattedOutput += "Text: " + diagnosis.text;
+            //            // print to console
+            //            //Console.WriteLine(strFormattedOutput);
+            //            FormTools.AppendText(this, tbLog, strFormattedOutput + Environment.NewLine);
 
-                        break;
+            //            break;
 
-                    case 2:     //'Write variable - par = "Application.GVL_x.var_x"
+            //        case 2:     //'Write variable - par = "Application.GVL_x.var_x"
 
-                        try
-                        {
-                            string strPar = Convert.ToString(Par);
-                            PLC_Con.Logic.WriteVariableBySymbol(strPar, Data);
-                            FormTools.AppendText(this, tbLog, "> PLC motion started succesfull." + Environment.NewLine);
-                        }
-                        catch (Exception ex)
-                        {
-                            FormTools.AppendText(this, tbLog, "> Could not start motion on PLC." + Environment.NewLine);
+            //            try
+            //            {
+            //                string strPar = Convert.ToString(Par);
+            //                PLC_Con.Logic.WriteVariableBySymbol(strPar, Data);
+            //                FormTools.AppendText(this, tbLog, "> PLC motion started succesfull." + Environment.NewLine);
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                FormTools.AppendText(this, tbLog, "> Could not start motion on PLC." + Environment.NewLine);
 
-                        }
+            //            }
 
 
 
-                        break;
-                }
+            //            break;
+            //    }
 
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-            }
+            //}
 
         }
 
@@ -494,7 +475,9 @@ namespace CLADAQ
             //aTimer.Dispose();
             try
             {
-                simTimer.Dispose();
+                simData.Close();
+                daqAcq.Close();
+
                 if (clientMTX != null)
                 {
                     clientMTX.Disconnect();
@@ -521,30 +504,27 @@ namespace CLADAQ
         {
             try
             {
-                PLC_Con.Connect(tb_Ip_Address.Text + " -timeout_connect=500" + " -user=boschrexroth" + " -password=boschrexroth");
+                bool blConnect = daqAcq.Connect(tb_Ip_Address.Text);
 
-                if (PLC_Con.IsConnected)
+                if (blConnect)
                 {
-                    tb_Ip_Address.BackColor = Color.Lime;
-
-
-                    if (init_run != true)
-                    {
-                        init_run = true;
-                    }
-
                     FormTools.AppendText(this, tbLog, "> " + "Connected" + Environment.NewLine);
                     lbStatus.Text = "Connected";
+                    tb_Ip_Address.BackColor = Color.Lime;
                 }
+                else
+                {
+                    tb_Ip_Address.BackColor = Color.Red;
+                    lbStatus.Text = "Error on connecting";
+
+                    FormTools.AppendText(this, tbLog, "> " + "Error connecting:" + Environment.NewLine);
+                }
+                
             }
             catch (Exception ex)
             {
                 init_run = false;
-                tb_Ip_Address.BackColor = Color.Red;
-                lbStatus.Text = "Error on connecting";
-
-                FormTools.AppendText(this, tbLog, "> " + "Error connecting:" + Environment.NewLine);
-                FormTools.AppendText(this, tbLog, "> " + ex.ToString() + Environment.NewLine);
+                
             }
         }
 
@@ -574,7 +554,7 @@ namespace CLADAQ
                 FormTools.AppendText(this, tbLog, "> " + "PLC stopped" + Environment.NewLine);
                 lbStatus.Text = "PLC stopped";
 
-                PLC_Con.Disconnect();
+                daqAcq.Disconnect();
                 FormTools.AppendText(this, tbLog, "> " + "Succesfully disconected" + Environment.NewLine);
                 tb_Ip_Address.BackColor = Color.White;
                 lbStatus.Text = "Disconnected";
@@ -595,22 +575,14 @@ namespace CLADAQ
 
             DataPoint dp = new DataPoint();
 
-            //Console.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
-            //Thread thread = Thread.CurrentThread;
-            //string msg = String.Format("Thread ID: {0}\n", thread.ManagedThreadId);
-            //FormTools.AppendText(this, tbLog, ">  " + msg);
 
-            //lb_Pos_As1.Text = dblAxisPos[15].ToString();
-            //lb_Pos_As1.Text = dblAxisPos[16].ToString();
+            string[] strTimeBuff = { };
 
-            //lb_Pos_As1.Text = dblPosBuff[intIdxEnd - 1, 0].ToString();
-            //lb_Pos_As2.Text = dblPosBuff[intIdxEnd - 1, 1].ToString();
-
-            dispTimer.Stop();
+            //dispTimer.Stop();
 
             for (int i = 0; i < intBuffS; i = i + 10)
             {
-                if (strTimeBuff[i] != null)
+                //if (strTimeBuff[i] != null)
                 {
                     if (chart1.Series[0].Points.Count == 0)
                     { dp.XValue = 0; }
@@ -624,20 +596,20 @@ namespace CLADAQ
                     //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
 
                     // Vel & Power
-                    chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
+                    //chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
                     //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblAcqCh[1-1,i] * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
                     //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblAcqCh[6-1,i]); //dblCh2
 
                     //chart2.Series[0].Points.AddXY(dblCh1[i], dblCh2[i]);
-                    chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
+                   // chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
                     //chart2.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
                 }
             }
-            if (strTimeBuff[1] != null)
-            {
-                TimeSpan t1 = GlobalUI.sw.Elapsed;
-                FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
-            }
+            //if (strTimeBuff[1] != null)
+            //{
+            //    TimeSpan t1 = GlobalUI.sw.Elapsed;
+            //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
+            //}
 
             for (int i = 0; i < chart1.Series.Count; i++)
             {
@@ -776,71 +748,7 @@ namespace CLADAQ
 
         }
 
-
-
-        protected virtual void OnAcquireTimedEvent(Object source, EventArgs myEventArgs)          // Acquisition timerµ
-        //protected void OnAcquireTimedEvent(Object state)
-        {
-            if (PLC_Con.IsConnected && !bSimValues) //&& blPLCRunning
-            {
-                if (bDebugLog)
-                {
-                    TimeSpan t1 = GlobalUI.sw.Elapsed;
-                    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Polling time buffer" + Environment.NewLine);
-                }
-
-
-                uiTime = PLC_Con.Logic.ReadVariableBySymbol("Application.PlcVarGlobal.tTimeBufSent_gb");//tTimeBuf1_gb
-
-                if ((uiTime.SequenceEqual(intTimeBuffOld)) == false)
-                {
-                    double[] tempBuf = new double[intBuffS];
-                    if (bDebugLog)
-                    {
-                        TimeSpan t1 = GlobalUI.sw.Elapsed;
-                        FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FFFFFF\.") + "Reading new axis position" + Environment.NewLine);
-                    }
-
-                    string dummyPath = "";
-                    for (int ii = 1; ii < (intNCh+1); ii += 1)
-                    {
-                        dummyPath = "Application.PlcVarGlobal.reBuf" + ii.ToString() +  "_Sent_gb";
-
-                        tempBuf = PLC_Con.Logic.ReadVariableBySymbol(dummyPath);
-                        System.Buffer.BlockCopy(tempBuf, 0, dblAcqCh, intBuffS * (ii-1) * 8, intBuffS*8);
-                    }
-
-                    //temporary fix to avoid Null strTimeBuff
-                    DateTime now = DateTime.Now;
-                    for (int i = 0; i < intBuffS; i += 1)
-                    {
-                        intTimeBuff[i] = uiTime[i];
-                        strTimeBuff[i] = uiTime[i].ToString();
-
-                        strDateBuff[i] = now.ToString(@"yyyy-MM-dd");
-                        strTimeBuff[i] = now.ToString(@"HH\:mm\:ss\.FFFFFF");
-                    }
-
-                    intTimeBuffOld = uiTime;
-                    //this.OnValueChanged(null);
-                    //CallUpdateBuffer(null,null);
-
-                    if (daqBuff != null)
-                    {
-                        daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
-                        //intTimeBuff = null;
-                        //dblBuff = null;
-                    }
-
-
-                    ulong dummy = intTimeBuff[1];
-                }
-            }
-
-            
-
-        }
-
+        
         [Category("Action")]
         [Description("Trigger acquisition when buffer value is changed")]
 
@@ -855,43 +763,12 @@ namespace CLADAQ
         }
 
 
-        protected void CallUpdateBuffer(object sender, EventArgs e)
-        {
-            
-            //try
-            //{
-            //    daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
-            //    if (bDebugLog)
-            //    {
-            //        Thread thread = Thread.CurrentThread;
-            //        lock (lockObj)
-            //        {
-
-            //            TimeSpan t1 = GlobalUI.sw.Elapsed;
-            //            string msg = String.Format(t1.ToString(@"ss\:FF\.") + " :  Appended to buffer.");
-            //            FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-            //            msg = String.Format(" Acquisition event from Thread ID: {0}\n", thread.ManagedThreadId);
-            //            FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    TimeSpan t1 = GlobalUI.sw.Elapsed;
-            //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FF\.") + " :" + " Error appending to buffer." + Environment.NewLine);
-            //    throw;
-            //}         
-        }
-
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
         {
             if (cbSimulate.Checked == false)
             {
-                //simTimer.Stop();
-                //simTimer.Dispose();
-                //dispTimer.Stop();
-
                 simData.StopSimulator();
+                dispTimer.Stop();
                 bSimValues = false;
 
                 TimeSpan t1 = GlobalUI.sw.Elapsed;
@@ -900,14 +777,9 @@ namespace CLADAQ
             }
             else
             {
-                //cbAcquisition.Checked = false;
-                //var autoEvent = new AutoResetEvent(false);
-
-                //// program wait for buffer to be filled
-                //simTimer.Start();
                 dispTimer.Start();
-
-                simData.StartSimulator();  
+                simData.StartSimulator();
+                
                 bSimValues = true;
 
                 TimeSpan t1 = GlobalUI.sw.Elapsed;
@@ -919,20 +791,16 @@ namespace CLADAQ
         {
             if (cbAcquisition.Checked == true)
             {
-                // Start the timer
-                if (acqTimer != null)
-                {
-                    acqTimer.Start();
-                    //acqTimer = new System.Threading.Timer( new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
-                    //acqTimer.Change(0, intAcqDelay);
-                }
                 cbSimulate.Checked = false;
+                // Start the timer
+                daqAcq.Start();
+                              
                 dispTimer.Start();
 
             }
             else
             {
-                acqTimer.Dispose();
+                daqAcq.Stop();
                 dispTimer.Stop();
 
             }
@@ -1131,54 +999,3 @@ namespace CLADAQ
     }
 }
 
-
-
-
-
-//public void OnSimTimedEvent(Object source, EventArgs myEventArgs)         // Simulation timer
-//{
-//    DateTime now = new DateTime();
-//    double nowS = new double();
-
-//    Random rnd = new Random();
-//    for (int i = 0; i < intBuffS; i++)
-//    {
-//        DateTime nowT = DateTime.Now;
-//        nowS = nowT.Hour * 3600 + nowT.Minute * 60 + nowT.Second + now.Millisecond / 1000; //add 2 ms per sample to have 500Hz rate.
-
-//        intTimeBuff[i] = Convert.ToUInt64(nowS * 1000);
-
-//        for (int ii = 0; ii < intNCh; ii++)
-//        {
-//            dblPosBuff[i, ii] = 5 * Math.Sin(10 / 1000 * (nowS) * 6.28 + rnd.Next(1));
-//            //dblPosBuff[i, ii] = (nowS + i + ii)/166 - 0.5;
-//        }
-//        dblAcqCh[0, i] = dblPosBuff[i, 0];
-//        dblAcqCh[1, i] = dblPosBuff[i, 1];
-//        dblAcqCh[2, i] = dblPosBuff[i, 2];
-//        dblAcqCh[3, i] = 0; // dblPosBuff[i, 3];
-//        dblAcqCh[4, i] = 0; //dblPosBuff[i, 4];
-//        dblAcqCh[5, i] = 0; //dblPosBuff[i, 5];
-
-//        Thread.Sleep(1000 / intSimFS);
-//    }
-
-
-//    this.OnValueChanged(null);      //trigger buffer event if acq buffer full
-
-//    double dblPosEnd = dblPosBuff[intIdxEnd - 1, intNCh - 1];
-
-//    Thread thread = Thread.CurrentThread;
-
-//    if (bDebugLog)
-//    {
-//        TimeSpan t1 = GlobalUI.sw.Elapsed;
-//        string msg = String.Format(t1.ToString(@"ss\:fffff\.") + " Sim event from Thread ID: {0}\n", thread.ManagedThreadId);
-//        FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-//    }
-
-
-//    //}
-//    //catch (Exception ex)
-//    //{ }
-//}

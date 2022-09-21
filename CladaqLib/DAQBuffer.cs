@@ -152,7 +152,7 @@ public class DAQBuffer
             if (b > intBuffs - 1)
                 b = 0;
 
-            lock (listAcqBuffer[b_old])
+            //lock (listAcqBuffer[b_old]) // only works in threads not timer called events
             {
                 if (writeCSV) //if write to CSV make copy of buffer
                 {
@@ -173,32 +173,24 @@ public class DAQBuffer
         return 1;
     }
 
-// Private methods
+    // Private methods
     private int WriteBuffer(List<DataRecord> records)
     {
+        int intDone;
         if (writer != null)
         {
-            int Idcount = 0;
-            foreach (DataRecord dR in records.ToList())
-            {
-                Idcount = Idcount + 1;
-                DateTime localDate = DateTime.Now;
-                dR.PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US"));
-                dR.PrintTime = localDate.ToString(@"HH\:mm\:ss\.FFFFFF", new CultureInfo("EN-US"));
-                //records.Add(dR);
-            }
-
-            //lock (listAcqBuffer[b_old]) ;
             csv.WriteRecords(records);
             csv.Flush();
 
-            return 1;
+            intDone = 1;
         }
         else
         {
-            return 0; // no writer configured
+            intDone =  0; // no writer configured
         }
+        return intDone;
 
     }
- }
+
+}
 

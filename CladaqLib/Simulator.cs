@@ -83,6 +83,11 @@ namespace CladaqLib
             bRunning = false;
         }
 
+        public void Close()
+        {
+            timer.Dispose();
+        }
+
         private void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             DateTime now = new DateTime();
@@ -128,18 +133,18 @@ namespace CladaqLib
                 
             }
 
-
-            if(daqBuff != null)
+            lock (dblBuff)
             {
-               daqBuff.AppendToBuffer(dblBuff, intTimeBuff);
-                //intTimeBuff = null;
-                //dblBuff = null;
+                lock (intTimeBuff)
+                {
+                    if (daqBuff != null)
+                    {
+                        daqBuff.AppendToBuffer(dblBuff, intTimeBuff);
+                        //intTimeBuff = null;
+                        //dblBuff = null;
+                    }
+                }
             }
-
-            Thread.Sleep(Convert.ToInt16(dblSimDelay / 4));
-
-            //double dblPosEnd = dblPosBuff[intIdxEnd - 1, intNCh - 1];
-
         }
 
     }

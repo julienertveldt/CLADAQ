@@ -361,7 +361,6 @@
     <Compile Include="CladaqGUI.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="FormTools.cs" />
-    <Compile Include="DataRecord.cs" />
     <Compile Include="helperclasses.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

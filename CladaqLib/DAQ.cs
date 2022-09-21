@@ -4,10 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace CladaqLib
 {
-    public class DAQ
+    public class DAQ : INotifyPropertyChanged
     {
         private MlpiConnection PLC_Con = new MlpiConnection();
 
@@ -37,6 +39,8 @@ namespace CladaqLib
 
         public double dblAcqDelay { get; set; }
         public bool bRunning { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public DAQ(DAQBuffer daqBuffIn, int intBuffSIn, uint intNChIn, uint intAcqDelay)
         {
@@ -81,6 +85,7 @@ namespace CladaqLib
 
             if (PLC_Con.IsConnected) //&& blPLCRunning
             {
+                timer.Stop();
                 //if (bDebugLog)
                 //{
                 //    TimeSpan t1 = GlobalUI.sw.Elapsed;
@@ -135,6 +140,9 @@ namespace CladaqLib
                     }
 
                 }
+
+                OnPropertyChanged();
+                timer.Start();
             }
 
         }
@@ -170,6 +178,13 @@ namespace CladaqLib
             timer.Dispose();
         }
 
-} // class DAQ
+        // Create the OnPropertyChanged method to raise the event
+        // The calling member's name will be used as the parameter.
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+    } // class DAQ
 
 }// namespace

@@ -190,11 +190,11 @@ namespace CLADAQ
             dispTimer = new System.Windows.Forms.Timer();
             dispTimer.Interval = intDispDelay;
             dispTimer.Tick += new EventHandler(this.OnDispTimedEvent);
-
+            
             //acqTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
             //acqTimer.Change(0, intAcqDelay);
-   
-               
+
+
 
             //simTimer = new System.Windows.Forms.Timer();
             //simTimer.Interval = intSimDelay;
@@ -310,18 +310,17 @@ namespace CLADAQ
 
             Browser.PopulateTreeView(this.treeView2);
 
-            daqBuff = new DAQBuffer(intNumBuffs, intAcqS);      // buffer for CSV writing
+            daqBuff = new DAQBuffer(intNumBuffs, intAcqS);                      // buffer for CSV writing
 
-
-            daqAcq = new DAQ(daqBuff, intBuffS, intNCh, Global.intAcqDelay);
-
+            daqAcq = new DAQ(daqBuff, intBuffS, intNCh, Global.intAcqDelay);    //acquisition buffer 
 
             simData = new Simulator(daqBuff);
             simData.dblSimDelay = 20;
 
             lbStatus.Text = "Ready ...";
 
-            Thread.Sleep(200);
+            //daqAcq.PropertyChanged += OnDispTimedEvent;
+            //Thread.Sleep(200);
            
         }
 
@@ -341,8 +340,9 @@ namespace CLADAQ
             trd3.Priority = ThreadPriority.BelowNormal;
 
             trd1.Start();
-            //trd2.Start();
-            //trd3.Start();
+            trd2.Start();
+            trd3.Start();
+            
 
             GlobalUI.sw = new Stopwatch();
             GlobalUI.sw.Start();
@@ -364,33 +364,16 @@ namespace CLADAQ
         private void Task_1_DoWork()                // simulation thread
         {
 
-            //Thread.Sleep(200);
         }
 
         private void Task_2_DoWork()                 //  acquisition thread
         {
-            //this.buffer = dblPosBuff[intBuffS - 1];
-            //while (true)
-            //{
-
-            //    Thread.Sleep(100);
-            //}
 
         }
 
         private void Task_3_DoWork()
         {
-            while (false)
-            {
-                try
-                {
-                    //do your thing;
-                }
-                catch (Exception ex)
-                { }
-
-                Thread.Sleep(2000);
-            }
+            
         }
 
         private void ReadWrite(params object[] list) // Run read or write task
@@ -495,11 +478,6 @@ namespace CLADAQ
 
         }
 
-        private void tbLog_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void bt_Connect_Click(object sender, EventArgs e)
         {
             try
@@ -572,44 +550,56 @@ namespace CLADAQ
 
         public void OnDispTimedEvent(Object source, EventArgs myEventArgs)          // acquisition timer
         {
-
+            dispTimer.Stop();
             DataPoint dp = new DataPoint();
 
+            List<DataRecord> drDisp = daqBuff.GetLastDataRecords();
+
+            if (drDisp != null)
+            {
+                string time = drDisp[drDisp.Count-1].DataTime;
+                TimeSpan t1 = GlobalUI.sw.Elapsed;
+                FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time of acq value. " + time.ToString() + Environment.NewLine);
+            
 
             string[] strTimeBuff = { };
 
-            //dispTimer.Stop();
-
-            for (int i = 0; i < intBuffS; i = i + 10)
-            {
-                //if (strTimeBuff[i] != null)
+                for (int i = 0; i < intAcqS; i = i + 10)
                 {
-                    if (chart1.Series[0].Points.Count == 0)
-                    { dp.XValue = 0; }
-                    else
-                    { dp = chart1.Series[0].Points.Last(); }
+                    //if (strTimeBuff[i] != null)
+                    {
+                        if (chart1.Series[0].Points.Count == 0)
+                        {
+                            dp.XValue = 0;
+                        }
+                        else
+                        {
+                            dp = chart1.Series[0].Points.Last();
+                        }
 
-                    // Define plot channels
+                        // Define plot channels
 
-                    // Positions X & Y
-                    //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblCh1[i]); //dblCh1
-                    //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
+                        // Positions X & Y
+                        //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblCh1[i]); //dblCh1
+                        //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
 
-                    // Vel & Power
-                    //chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
-                    //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblAcqCh[1-1,i] * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
-                    //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblAcqCh[6-1,i]); //dblCh2
+                        // Vel & Power
+                        //chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
+                        chart1.Series[0].Points.AddXY(dp.XValue + 1, drDisp[i].VelCmd * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
+                        chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].LaserPcmd); //dblCh2
 
-                    //chart2.Series[0].Points.AddXY(dblCh1[i], dblCh2[i]);
-                   // chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
-                    //chart2.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
+                        chart2.Series[0].Points.AddXY(drDisp[i].PosX, drDisp[i].PosY);
+                        // chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
+                        //chart2.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
+                    }
                 }
             }
-            //if (strTimeBuff[1] != null)
-            //{
-            //    TimeSpan t1 = GlobalUI.sw.Elapsed;
-            //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
-            //}
+
+                //if (strTimeBuff[1] != null)
+                //{
+                //    TimeSpan t1 = GlobalUI.sw.Elapsed;
+                //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
+                //}
 
             for (int i = 0; i < chart1.Series.Count; i++)
             {
@@ -632,19 +622,19 @@ namespace CLADAQ
                     chart1.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
 
                     dp = chart1.Series[1].Points.FindMinByValue("Y1", 0);
-                    chart1.ChartAreas[0].AxisY.Minimum = Math.Sign(dp.YValues[0]) * Math.Abs(Math.Round(dp.YValues[0])) * 1.1; //-0.001 quick fix to avoid Ymin = Ymax
+                    chart1.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 -1; //-0.001 quick fix to avoid Ymin = Ymax
 
                     dp = chart2.Series[0].Points.FindMaxByValue("Y1", 0);
                     chart2.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
 
                     dp = chart2.Series[0].Points.FindMinByValue("Y1", 0);
-                    chart2.ChartAreas[0].AxisY.Minimum = Math.Sign(dp.YValues[0]) * Math.Abs(Math.Round(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
+                    chart2.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
 
                     dp = chart2.Series[0].Points.FindMaxByValue("X", 0);
                     chart2.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue * 1.1) + 1;
 
                     dp = chart2.Series[0].Points.FindMinByValue("X", 0);
-                    chart2.ChartAreas[0].AxisX.Minimum = Math.Sign(dp.XValue * Math.Abs(Math.Round(dp.XValue))) * 1.1 - 1;
+                    chart2.ChartAreas[0].AxisX.Minimum = Math.Sign(Math.Round(dp.XValue * Math.Abs(dp.XValue))) * 1.1 - 1;
                 }
                 catch (Exception exc)
                 { }
@@ -727,8 +717,7 @@ namespace CLADAQ
                 }
             }
 
-            dispTimer.Enabled = true;
-
+            dispTimer.Start();
 
             //int intStatMTX = String.Compare(clientMTX.State.ToString(), "Connected");
             //if (intStatMTX == 0)
@@ -752,15 +741,15 @@ namespace CLADAQ
         [Category("Action")]
         [Description("Trigger acquisition when buffer value is changed")]
 
-        protected virtual void OnValueChanged(EventArgs e)
-        {
-            //EventHandler handler = triggerAcquisition;
-            // (2)
-            // Raise the event
-            if (ValueChanged != null)
-                ValueChanged(this, e);
-            //handler?.Invoke(this, e);
-        }
+        //protected virtual void OnValueChanged(EventArgs e)
+        //{
+        //    //EventHandler handler = triggerAcquisition;
+        //    // (2)
+        //    // Raise the event
+        //    if (ValueChanged != null)
+        //        ValueChanged(this, e);
+        //    //handler?.Invoke(this, e);
+        //}
 
 
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
@@ -800,8 +789,11 @@ namespace CLADAQ
             }
             else
             {
-                daqAcq.Stop();
-                dispTimer.Stop();
+                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                {
+                    daqAcq.Stop();
+                    dispTimer.Stop();
+                }
 
             }
 
@@ -864,9 +856,12 @@ namespace CLADAQ
             }
             else
             {
-                int res = daqBuff.CloseWriter();
-                writeCSV = false;
-                FormTools.AppendText(this, tbLog, ">  CSV stream closed at: " + strFilePath + Environment.NewLine);
+                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                {
+                    int res = daqBuff.CloseWriter();
+                    writeCSV = false;
+                    FormTools.AppendText(this, tbLog, ">  CSV stream closed at: " + strFilePath + Environment.NewLine);
+                }
             }
         }
 

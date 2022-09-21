@@ -17,6 +17,7 @@ public class DAQBuffer
     //public fields
 
     public string CsvPath { get; set; }
+    public bool bWriting { get; set; }
     //public bool bWriteFile { get; set; }
     //public int intNumBuffs { get; set; }            //number of buffers to use cyclically
     public int intAcqBuffPos { get; set; }
@@ -36,12 +37,14 @@ public class DAQBuffer
 
     private int b;          //buffer index
 
+    private string lasttime;
 
     private CsvWriter csv;
     private StreamWriter writer;
-    private List<DataRecord> records;
+    private List<DataRecord> records;           // for CSV writer
+    private List<DataRecord> listAcqReturn;     // for UI interaction
 
- // Constructor
+    // Constructor
     public DAQBuffer()
     : this(5,1000)
     { }
@@ -152,18 +155,21 @@ public class DAQBuffer
             if (b > intBuffs - 1)
                 b = 0;
 
-            //lock (listAcqBuffer[b_old]) // only works in threads not timer called events
+            lock (listAcqBuffer[b_old]) // only works in threads not timer called events
             {
+                listAcqReturn = new List<DataRecord>(listAcqBuffer[b_old]);
+
                 if (writeCSV) //if write to CSV make copy of buffer
                 {
-
+                    bWriting = true;
                     records = listAcqBuffer[b_old];
-                    //records = listAcqBuffer[b];
 
                     int success = 0;
-
-
                     success = WriteBuffer(records);
+                    if (success>0)
+                    {
+                        bWriting = false;
+                    }
 
                 }
                 listAcqBuffer[b_old].RemoveRange(0, intAcqS);
@@ -171,6 +177,29 @@ public class DAQBuffer
         }
 
         return 1;
+    }
+
+    public List<DataRecord> GetLastDataRecords()
+    {
+        //returns the last values that was added to the buffer cycling through the cyclic buffers.
+        
+        if (listAcqReturn != null)
+        {
+            if (listAcqReturn[1].DataTime != lasttime)
+            {
+                // only output list if buffer updated
+                lasttime = listAcqReturn[1].DataTime;
+                return listAcqReturn;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        else
+        { return null; }
+
+        
     }
 
     // Private methods
@@ -191,6 +220,8 @@ public class DAQBuffer
         return intDone;
 
     }
+
+    
 
 }
 

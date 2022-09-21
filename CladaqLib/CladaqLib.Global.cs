@@ -21,15 +21,15 @@ namespace CladaqLib
             //Buffer & Acquisition settings
             intBuffS = 100;                          // position value buffer sent by PLC: same as in GlobVarContant XM22
             intAcqS = intBuffS*10;                   // acquisition buffer to be written to file
-            intAcqDelay = 100;                          // ms delay for acquisition timer
-            intIdxEnd = intBuffS;                      // number of values in pos data buffer
-            intNumBuffs = 20;                           // number of (cyclic) buffers to use.
-            intSimFS = 500;                            // Simulation frequency
+            intAcqDelay = 20;                       // ms delay for acquisition timer
+            intIdxEnd = intBuffS;                    // number of values in pos data buffer
+            intNumBuffs = 20;                        // number of (cyclic) buffers to use.
+            intSimFS = 500;                          // Simulation frequency
             intNCh = 6;
 
             // GUI Settings;
             intDispDelay = 100;                         // ms delay for screen refresh
-            intPlotS = 100;                           // number of points to plot
+            intPlotS = 200;                           // number of points to plot
             intPlotSkip = 10;                          // plot 1 out of X samples
     }
 

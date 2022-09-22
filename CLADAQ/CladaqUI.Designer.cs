@@ -188,7 +188,7 @@
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1788, 110);
             this.panelTop.TabIndex = 0;
-            this.panelTop.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+
             // 
             // cbWriteCSV
             // 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C0E9100C-9D55-4753-884F-9127704D833C}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLADAQ", "CLADAQ\CLADAQ.csproj", "{D5514D94-516E-4718-AF35-1D11538D2842}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FF6A26B3-234B-4A76-92A6-0E8A895E2094} = {FF6A26B3-234B-4A76-92A6-0E8A895E2094}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "matlab", "matlab", "{869CF94D-DB38-4CF3-8E8E-138E0C46D347}"
+	ProjectSection(SolutionItems) = preProject
+		matlab\CladaqImport.m = matlab\CladaqImport.m
+		matlab\importSensortherm.m = matlab\importSensortherm.m
+		matlab\main.m = matlab\main.m
+		matlab\readCSV.m = matlab\readCSV.m
 	EndProjectSection
 EndProject
 Global
@@ -52,6 +60,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{869CF94D-DB38-4CF3-8E8E-138E0C46D347} = {C0E9100C-9D55-4753-884F-9127704D833C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6384D99A-6C83-4A6B-AF44-E7195F237146}

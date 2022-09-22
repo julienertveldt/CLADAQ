@@ -695,11 +695,15 @@ namespace CLADAQ
 
                 try
                 {
-                    var dummy = clientMTX.ReadNode("ns=27;s=NC.Chan.ActNcBlock,02");
-                    lblOPCVal1.Text = dummy.ToString();
+                    var dummy = clientMTX.ReadNode("ns=27;s=NC.Chan.ActCallChain,01,FilePosition"); // array
+                    //var dummy = clientMTX.ReadNode("ns=27;s=NC.Chan.ActCallChain,01,BlockNo");
+                    int[] intValues = (int[])dummy.Value;
+                    lblOPCVal1.Text = intValues[0].ToString();
+                    
 
-                    var dum2 = clientMTX.ReadNode("ns=27;s=NC.Chan.ActCallChain,02,BlockN");
-                    lblOPCVal2.Text = dum2.ToString();
+
+                    var dum3 = clientMTX.ReadNode("ns=27;s=NC.Chan.ActNcBlock,01");
+                    lblOPCVal2.Text = dum3.ToString();
                 }
                 catch (Exception ex)
                 { }
@@ -736,20 +740,6 @@ namespace CLADAQ
             //Thread.Sleep(100);
 
         }
-
-        
-        [Category("Action")]
-        [Description("Trigger acquisition when buffer value is changed")]
-
-        //protected virtual void OnValueChanged(EventArgs e)
-        //{
-        //    //EventHandler handler = triggerAcquisition;
-        //    // (2)
-        //    // Raise the event
-        //    if (ValueChanged != null)
-        //        ValueChanged(this, e);
-        //    //handler?.Invoke(this, e);
-        //}
 
 
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
@@ -789,6 +779,22 @@ namespace CLADAQ
             }
             else
             {
+                int intCount = 0;
+                bool bDisp = true;
+                while (daqBuff.bWriting && intCount < 500)
+                {
+                    if (bDisp)
+                    {
+                        TimeSpan t1 = GlobalUI.sw.Elapsed;
+                        FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:FF\.") + " :" + " Waiting to close buffer..." + Environment.NewLine);
+                        bDisp = false;
+                        intCount = intCount + 1;
+                    }   
+                    if ((intCount % 100)==0)
+                    { bDisp = true; }
+                    Thread.Sleep(50);
+
+                }
                 if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
                 {
                     daqAcq.Stop();

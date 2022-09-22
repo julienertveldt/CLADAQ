@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -25,6 +25,7 @@ namespace CladaqLib
 
         private int intBuffS;
         private uint intNCh;
+        private uint intAcqDelay;
 
         private System.Timers.Timer timer;
 
@@ -42,10 +43,11 @@ namespace CladaqLib
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DAQ(DAQBuffer daqBuffIn, int intBuffSIn, uint intNChIn, uint intAcqDelay)
+        public DAQ(DAQBuffer daqBuffIn, int intBuffSIn, uint intNChIn, uint intAcqDelayIn)
         {
             intBuffS = intBuffSIn;
             intNCh = intNChIn;
+            intAcqDelay = intAcqDelayIn;
 
             dblAcqCh = new double[intNCh, intBuffS];
             dblCh1 = new double[intBuffS];                             // Pos X
@@ -66,10 +68,12 @@ namespace CladaqLib
 
             daqBuff = daqBuffIn;
 
-            if (intAcqDelay == 0)
+            if (intAcqDelay < 5)
             {
-                intAcqDelay = 10;
+                intAcqDelay = 20;
             }
+
+            //timer = new System.Threading.Timer(new TimerCallback(OnAcquireTimedEvent));
 
             timer = new System.Timers.Timer();
             timer.Interval = intAcqDelay;
@@ -79,7 +83,7 @@ namespace CladaqLib
 
         }
 
-        protected void OnAcquireTimedEvent(Object source, EventArgs myEventArgs)          // Acquisition timerµ
+        protected void OnAcquireTimedEvent(Object source, System.Timers.ElapsedEventArgs e)          // Acquisition timerµ
         //protected void OnAcquireTimedEvent(Object state)
         {
 
@@ -142,22 +146,32 @@ namespace CladaqLib
                 }
 
                 OnPropertyChanged();
-                timer.Start();
+                
+                if (timer != null && bRunning)
+                {
+                    timer.Start(); // restart
+
+                }
             }
 
         }
 
         public void Start()
         {
-
+            if (intAcqDelay < 5)
+            {
+                intAcqDelay = 20;
+            }
             timer.Enabled = true;
-            bRunning = true;
+
+            if (timer.Enabled) { bRunning = true; }
 
         }
 
         public void Stop()
         {
-            timer.Enabled = false;
+            //timer.Enabled = false;
+            timer.Dispose();
             bRunning = false;
         }
 

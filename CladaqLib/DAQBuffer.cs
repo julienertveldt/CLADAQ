@@ -24,7 +24,6 @@ public class DAQBuffer
     public int intLastInd { get; set; }
     public int intAcqS { get; set; }                //Maximum of samples in buffer before writing to file
 
-
     //private fields
     private List<DataRecord>[] listAcqBuffer;                 // data buffer to write
     //private List<string> csvString;                           // CSV string to write (replaced by DataRecord)
@@ -90,7 +89,9 @@ public class DAQBuffer
         try
         {
             csv.Dispose();
+            writer.Close();
             writer.Dispose();
+            
             return 1;
         }
         catch (Exception)
@@ -208,8 +209,11 @@ public class DAQBuffer
         int intDone;
         if (writer != null)
         {
-            csv.WriteRecords(records);
-            csv.Flush();
+            if (csv != null)
+            {
+                csv.WriteRecords(records);
+                csv.Flush();
+            }
 
             intDone = 1;
         }
@@ -218,7 +222,6 @@ public class DAQBuffer
             intDone =  0; // no writer configured
         }
         return intDone;
-
     }
 
     

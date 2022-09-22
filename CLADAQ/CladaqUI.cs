@@ -32,108 +32,47 @@ namespace CLADAQ
     public partial class CLADAQ : Form
     { 
 
-        // constants (verified)
-        protected static object lockObj = new Object();
+        // constants (verified)     
+        protected static object lockObj = new Object();                     // for threading
         public static CultureInfo culture = new CultureInfo("EN-US");
-
-        //constants (to check their need/properties)
-        private static bool init_run = false;
-    
+  
         public static bool bDebugLog = false;
-
         protected static bool bSimValues = false;
 
+        private static int intBuffS;// = Global.intBuffS;                   // position value buffer sent by PLC: same as in GlobVarContant XM22
+        private static uint intNCh; // = Global.intNCh;
+        private static int intAcqS;// = Global.intAcqS;                     // acquisition buffer to be written to file
 
-        // =============== To be replaced ==========
-        // Atention intBuffS also declared in Global
-        public static int intBuffS = 100;                                // position value buffer sent by PLC: same as in GlobVarContant XM22
+        private static uint intAcqDelay; // = Global.intAcqDelay;            // ms delay for acquisition timer
+        private static int intIdxEnd;// = intBuffS;                         // number of values in pos data buffer
+        private static int intNumBuffs;// = Global.intNumBuffs;             // number of (cyclic) buffers to use.
+        private static int intPlotS;// = Global.intPlotS;                   // number of points to plot
+        private static int intPlotSkip;// = Global.intPlotSkip;             // plot 1 out of X samples
 
-        private static int intAcqS;// = Global.intAcqS;                  // acquisition buffer to be written to file
-
-        private static uint intAcqDelay; // = Global.intAcqDelay;         // ms delay for acquisition timer
-        private static int intIdxEnd;// = intBuffS;                      // number of values in pos data buffer
-        private static int intNumBuffs;// = Global.intNumBuffs;          // number of (cyclic) buffers to use.
-        private static int intPlotS;// = Global.intPlotS;                // number of points to plot
-        private static int intPlotSkip;// = Global.intPlotSkip;          // plot 1 out of X samples
-
-        public static int intSimFS = 500;                                    // Simulation frequency
-        public static uint intNCh = 6;
-
-        private static System.Windows.Forms.Timer dispTimer;            // Display refresh timer
-
-        private int intSimDelay;    // = intBuffS;                      // simulation timer delay (set equal to intBuffS)
-        // ===================================
-
-        //private static System.Threading.Timer aTimer;                 // Acquisition timer 
-
+        private static System.Windows.Forms.Timer dispTimer;                // Display refresh timer
 
         private static string strFilePath = "C:/temp/test.csv";     
 
         private static OpcClient clientMTX = new OpcClient("opc.tcp://192.168.142.250:4840/");
-        //private static OpcClient clientXM = new OpcClient("opc.tcp://192.168.142.3:4840/"); //XM adres
-        //private static OpcClient clientMTX = new OpcClient("opc.tcp://localhost/");
-
-        //private static Opc.Ua.client;
-
-        //variables
-        private double[] dblAxisPos = new double[20];               // axis positions
-        private int job_Nr;                                         // threading task job (read, write)
-        //private MlpiConnection PLC_Con = new MlpiConnection();
-        private object Par = new object();
-        private object Data = new object();
-
-        private bool writeCSV = false;                              // run acquisition of data without writing at launch
-
-        private int[] intSimTRange = new int[intBuffS];
-        //= Enumerable.Range(1, intIdxEnd).ToArray();
-        
-        // Already moved to DAQBuffer Class
-        //private int intBuffPos = 0;                                 //current position in the position value buffer
-        //private int intAcqBuffPos = 0;                              //current position in the acquired data buffer --> goes in CSV file
-        //private int Idcount = 0;
-        //private int b = 0;                                          //buffer index
-        //private int intDispCounter = 0;                             //plot index
-
-
-
-        private bool blPLCRunning = false;
-        private bool bClientMTXConnected = false;
-
-        //// define buffers comming from MLPI [remove here]
-        //protected static double[,] dblPosBuff = new double[intBuffS, intNCh];            // CNC positions + laser channel
-        //public static string[] strTimeBuff = new string[intBuffS];                        // CNC timestamp
-        //protected static UInt64[] intTimeBuff = new UInt64[intBuffS];
-        //protected static UInt64[] intTimeBuffOld = new UInt64[intBuffS];                     //previous cnc timestamp
-        //public static string[] strDateBuff = new string[intBuffS];
-
-
-        // Display buffers
-       // protected double[,] dblAcqCh = new double[intNCh, intBuffS];
-        protected double[] dblCh1 = new double[intBuffS];                             // Pos X
-        protected double[] dblCh2 = new double[intBuffS];                             // Pos Y
-        protected double[] dblCh3 = new double[intBuffS];                             // Pos Z
-        protected double[] dblCh4 = new double[intBuffS];                             // Vel cmd
-        protected double[] dblCh5 = new double[intBuffS];                             // Laser Cmd
-        protected double[] dblCh6 = new double[intBuffS];                             // Laser Fdbck
-        protected double[] dblCh7 = new double[intBuffS];                             // Medicoat FlowWatch
-        protected UInt64[] uiTime = new UInt64[intBuffS];
-
-        private string[] arOpcVal = new string[10];
-
-        public double buffer = new double();
 
         public static DAQBuffer daqBuff;
         public static DAQ daqAcq;
-
         public static Simulator simData;
 
         // Display GUI static fields
         private static int intDispDelay; //= Global.intDispDelay;                        // ms delay for screen refresh
 
+        // ===================================
+        // Variables
 
-        // define internal CLADAQ buffers
-        protected static List<DataRecord>[] listAcqBuffer = new List<DataRecord>[intNumBuffs];                  // data buffer to write
-        protected List<string> csvString = new List<string>();                                           //CSV string to write
+        // for read-write task in PLC not used at the moment
+        private int job_Nr;                                         // threading task job (read, write)
+        private object Par = new object();
+        private object Data = new object();
+
+        private bool writeCSV = false;                              // run acquisition of data without writing at launch
+        private bool blPLCRunning = false;
+        private bool bClientMTXConnected = false;
 
         // plot options
         protected bool bPlotOn = false;
@@ -141,33 +80,25 @@ namespace CLADAQ
         private double dblYMax = 10;
         private double dblYMin = 0;
 
-        
-        public event EventHandler ValueChanged;
-
-        //public static CLADAQ mainForm;
-
-
-        
+        private DataPoint dp = new DataPoint();
 
         public CLADAQ()
         {
             CladaqLib.Global.InitializeApp();
 
             // Central buffer & Acquisition
-            //intBuffS = Global.intBuffS;                // position value buffer sent by PLC: same as in GlobVarContant XM22
+            intBuffS = Global.intBuffS;                // position value buffer sent by PLC: same as in GlobVarContant XM22
             intAcqS = Global.intAcqS;
-            intAcqDelay = Global.intAcqDelay;          
-            intIdxEnd = intBuffS;                      
+            intAcqDelay = Global.intAcqDelay;            
             intNumBuffs = Global.intNumBuffs;
-            
+            intNCh = Global.intNCh;
+
+
             // Plotting & GUI
             intPlotS = Global.intPlotS;                
             intPlotSkip = Global.intPlotSkip;
             intDispDelay = Global.intDispDelay;
             
-            // Simulator
-            intSimDelay = intBuffS;
-
             InitializeComponent();                      // Standard WinForms method for building Form
         }
 
@@ -177,29 +108,16 @@ namespace CLADAQ
             public static Stopwatch sw = new Stopwatch();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void CLADAQ_Load(object sender, EventArgs e)
         {
             lbStatus.Text = "Loading GUI content ...";
 
-            // Create a timer and set an interval.
+        // Create a display timer and set an interval.
             dispTimer = new System.Windows.Forms.Timer();
             dispTimer.Interval = intDispDelay;
             dispTimer.Tick += new EventHandler(this.OnDispTimedEvent);
-            
-            //acqTimer = new System.Threading.Timer(new System.Threading.TimerCallback(this.OnAcquireTimedEvent));
-            //acqTimer.Change(0, intAcqDelay);
-
-
-
-            //simTimer = new System.Windows.Forms.Timer();
-            //simTimer.Interval = intSimDelay;
-            //simTimer.Tick += new EventHandler(this.OnSimTimedEvent);
-
+         
+        // UI initialization
             cpBar1.Text = "";
             lbBar1.Text = "Spindle";
             cpBar2.Text = "";
@@ -246,7 +164,10 @@ namespace CLADAQ
             cbAutoSize.Checked = bAutoSize;
             //writeCSV = cbWriteCSV.Checked;
 
-            //chart 1
+        //chart 1
+
+            chart1.ChartAreas[0].AxisX.Interval = 25; // Intervals of 1/10 samples plotted
+
             var ser1 = chart1.Series[0];
             ser1.Name = "VelCmd";
             ser1.Font = new Font("Arial", 8, FontStyle.Italic);
@@ -278,7 +199,7 @@ namespace CLADAQ
             l1.Docking = Docking.Bottom;
             l1.Alignment = StringAlignment.Center;
 
-            //chart 2
+        //chart 2
             var ser3 = chart2.Series[0];
             ser3.Name = "Pos X-Y";
             ser3.Font = new Font("Arial", 8, FontStyle.Italic);
@@ -296,9 +217,7 @@ namespace CLADAQ
             tbLog.ScrollBars = ScrollBars.Vertical;
             tbLog.WordWrap = false;
 
-            //this.mainForm = this;
-
-            
+                  
             if (bSimValues)
                 intIdxEnd = intBuffS;
 
@@ -318,9 +237,6 @@ namespace CLADAQ
             simData.dblSimDelay = 20;
 
             lbStatus.Text = "Ready ...";
-
-            //daqAcq.PropertyChanged += OnDispTimedEvent;
-            //Thread.Sleep(200);
            
         }
 
@@ -329,19 +245,19 @@ namespace CLADAQ
         {
             var autoEvent = new AutoResetEvent(false);
 
-            Thread trd0 = GlobalUI.trd[0] = Thread.CurrentThread;             // GUI
-            Thread trd1 = GlobalUI.trd[1] = new Thread(Task_1_DoWork);        // Simulataion
-            Thread trd2 = GlobalUI.trd[2] = new Thread(Task_2_DoWork);        // Acquisition
-            Thread trd3 = GlobalUI.trd[3] = new Thread(Task_3_DoWork);
+            //Thread trd0 = GlobalUI.trd[0] = Thread.CurrentThread;             // GUI
+            //Thread trd1 = GlobalUI.trd[1] = new Thread(Task_1_DoWork);        // Acquisition
+            //Thread trd2 = GlobalUI.trd[2] = new Thread(Task_2_DoWork);        // Buffer writer
+            //Thread trd3 = GlobalUI.trd[3] = new Thread(Task_3_DoWork);
 
-            trd0.Priority = ThreadPriority.BelowNormal;
-            trd1.Priority = ThreadPriority.AboveNormal;
-            trd2.Priority = ThreadPriority.AboveNormal;
-            trd3.Priority = ThreadPriority.BelowNormal;
+            //trd0.Priority = ThreadPriority.BelowNormal;
+            //trd1.Priority = ThreadPriority.AboveNormal;
+            //trd2.Priority = ThreadPriority.AboveNormal;
+            //trd3.Priority = ThreadPriority.BelowNormal;
 
-            trd1.Start();
-            trd2.Start();
-            trd3.Start();
+            //trd1.Start();
+            //trd2.Start();
+            //trd3.Start();
             
 
             GlobalUI.sw = new Stopwatch();
@@ -355,23 +271,19 @@ namespace CLADAQ
                 FormTools.AppendText(this, tbLog, ">  " + msg + Environment.NewLine);
             }
 
-            //lock (lockObj)
-
-            //Thread.Sleep(100);
-
         }
 
-        private void Task_1_DoWork()                // simulation thread
+        private void Task_1_DoWork()                 // acquisition thread
         {
 
         }
 
-        private void Task_2_DoWork()                 //  acquisition thread
+        private void Task_2_DoWork()                 //  writing buffer thread
         {
 
         }
 
-        private void Task_3_DoWork()
+        private void Task_3_DoWork()                // simulator thread
         {
             
         }
@@ -394,63 +306,6 @@ namespace CLADAQ
             TimeSpan t1 = GlobalUI.sw.Elapsed;
             //TimeSpan t2 = (t1.Ticks - (t1.Ticks % 10000));
             FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"hh\:mm\:ss\.") + " Task 1 by " + msg + Environment.NewLine);
-
-            // [remove here]
-            //if (PLC_Con.IsConnected)
-            //{
-            //    switch (job_Nr)
-            //    {
-            //        case 1:      //read variables
-
-            //            Diagnosis diagnosis = PLC_Con.System.GetDisplayedDiagnosis();
-            //            // add timestamp
-            //            string strFormattedOutput = "";
-            //            strFormattedOutput += "Time: "
-            //                + diagnosis.dateTime.day.ToString("00") + "."
-            //                + diagnosis.dateTime.month.ToString("00") + "."
-            //                + diagnosis.dateTime.year.ToString("00") + " - "
-            //                + diagnosis.dateTime.minute.ToString("00") + ":"
-            //                + diagnosis.dateTime.hour.ToString("00") + ":"
-            //                + diagnosis.dateTime.second.ToString("00") + System.Environment.NewLine;
-            //            // add current state
-            //            strFormattedOutput += "State: " + diagnosis.state.ToString() + System.Environment.NewLine;
-            //            // add dispatcher of diagnosis
-            //            strFormattedOutput += "Despatcher: " + diagnosis.despatcher.ToString() + System.Environment.NewLine;
-            //            // add error number
-            //            strFormattedOutput += "Number: 0x" + String.Format("{0:X}", diagnosis.number) + System.Environment.NewLine;
-            //            // add description
-            //            strFormattedOutput += "Text: " + diagnosis.text;
-            //            // print to console
-            //            //Console.WriteLine(strFormattedOutput);
-            //            FormTools.AppendText(this, tbLog, strFormattedOutput + Environment.NewLine);
-
-            //            break;
-
-            //        case 2:     //'Write variable - par = "Application.GVL_x.var_x"
-
-            //            try
-            //            {
-            //                string strPar = Convert.ToString(Par);
-            //                PLC_Con.Logic.WriteVariableBySymbol(strPar, Data);
-            //                FormTools.AppendText(this, tbLog, "> PLC motion started succesfull." + Environment.NewLine);
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                FormTools.AppendText(this, tbLog, "> Could not start motion on PLC." + Environment.NewLine);
-
-            //            }
-
-
-
-            //            break;
-            //    }
-
-            //}
-            //else
-            //{
-
-            //}
-
         }
 
         public void CLADAQ_FormClosing(object sender, FormClosingEventArgs e)
@@ -472,9 +327,9 @@ namespace CLADAQ
             { }
 
 
-            GlobalUI.trd[1].Abort();
-            GlobalUI.trd[2].Abort();
-            GlobalUI.trd[3].Abort();
+            //GlobalUI.trd[1].Abort();
+            //GlobalUI.trd[2].Abort();
+            //GlobalUI.trd[3].Abort();
 
         }
 
@@ -501,8 +356,7 @@ namespace CLADAQ
             }
             catch (Exception ex)
             {
-                init_run = false;
-                
+                throw;
             }
         }
 
@@ -551,7 +405,7 @@ namespace CLADAQ
         public void OnDispTimedEvent(Object source, EventArgs myEventArgs)          // acquisition timer
         {
             dispTimer.Stop();
-            DataPoint dp = new DataPoint();
+            
 
             List<DataRecord> drDisp = daqBuff.GetLastDataRecords();
 
@@ -580,26 +434,19 @@ namespace CLADAQ
                         // Define plot channels
 
                         // Positions X & Y
-                        //chart1.Series[0].Points.AddXY(dp.XValue + 1, dblCh1[i]); //dblCh1
-                        //chart1.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
+                        //chart1.Series[0].Points.AddXY(dp.XValue + 1, drDisp[i].PosX); //dblCh1
+                        //chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].PosY); //dblCh2
 
                         // Vel & Power
-                        //chart1.Series[0].Points.AddXY(dp.XValue + 1, uiTime[i]);
                         chart1.Series[0].Points.AddXY(dp.XValue + 1, drDisp[i].VelCmd * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
                         chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].LaserPcmd); //dblCh2
 
+                        // Chart 2: XY plot
                         chart2.Series[0].Points.AddXY(drDisp[i].PosX, drDisp[i].PosY);
-                        // chart2.Series[0].Points.AddXY(dblAcqCh[1-1,i], dblAcqCh[2-1,i]); //dblCh1
-                        //chart2.Series[1].Points.AddXY(dp.XValue + 1, dblCh2[i]); //dblCh2
+
                     }
                 }
             }
-
-                //if (strTimeBuff[1] != null)
-                //{
-                //    TimeSpan t1 = GlobalUI.sw.Elapsed;
-                //    FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time buffer returns zero. " + Environment.NewLine);
-                //}
 
             for (int i = 0; i < chart1.Series.Count; i++)
             {
@@ -618,32 +465,14 @@ namespace CLADAQ
             {
                 try
                 {
-                    dp = chart1.Series[0].Points.FindMaxByValue("Y1", 0);
-                    chart1.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
-
-                    dp = chart1.Series[1].Points.FindMinByValue("Y1", 0);
-                    chart1.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 -1; //-0.001 quick fix to avoid Ymin = Ymax
-
-                    dp = chart2.Series[0].Points.FindMaxByValue("Y1", 0);
-                    chart2.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
-
-                    dp = chart2.Series[0].Points.FindMinByValue("Y1", 0);
-                    chart2.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
-
-                    dp = chart2.Series[0].Points.FindMaxByValue("X", 0);
-                    chart2.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue * 1.1) + 1;
-
-                    dp = chart2.Series[0].Points.FindMinByValue("X", 0);
-                    chart2.ChartAreas[0].AxisX.Minimum = Math.Sign(Math.Round(dp.XValue * Math.Abs(dp.XValue))) * 1.1 - 1;
+                    this.ResizeChart();
                 }
                 catch (Exception exc)
                 { }
             }
             else
             {
-                //dp = chart1.Series[0].Points.FindMaxByValue("X", 0);
-                //chart1.ChartAreas[0].AxisX.Maximum = dp.XValue;
-                //chart1.ChartAreas[0].AxisX.Minimum = 0;
+
                 chart1.ChartAreas[0].AxisY.Maximum = dblYMax;
                 chart1.ChartAreas[0].AxisY.Minimum = dblYMin;
 
@@ -655,16 +484,19 @@ namespace CLADAQ
 
             try
             {
+                // scrolling with X values (timer)
                 dp = chart1.Series[0].Points.FindMaxByValue("X", 0);
                 chart1.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue);
 
                 dp = chart1.Series[0].Points.FindMinByValue("X", 0);
                 chart1.ChartAreas[0].AxisX.Minimum = Math.Round(dp.XValue);
+
+                
             }
             catch (Exception exc)
             { }
 
-            // OPCUA display
+            // OPCUA display --> To be moved in new DAQBuffer object
 
             if (bClientMTXConnected == true)
             {
@@ -723,24 +555,28 @@ namespace CLADAQ
 
             dispTimer.Start();
 
-            //int intStatMTX = String.Compare(clientMTX.State.ToString(), "Connected");
-            //if (intStatMTX == 0)
-            //{
-            //    string str = clientMTX.ReadNode("ns=2;s=PLC.GlobalDAQ.dtSysTime_gb").ToString(); //ns=2;s=PLC.GlobalDAQ.dtSysTime_gb
-            //    lblOPCVal1.Text = ("System time: " + str);
-
-            //    str = clientMTX.ReadNode("ns=2;s=PLC.GlobalDAQ.dwLaserProgTon_gb").ToString(); //ns=2;s=PLC.GlobalDAQ.dtSysTime_gb
-            //    lblOPCVal2.Text = ("Laser on time: " + str);
-            //}
-            //else
-            //{
-            //    lblOPCStatus.Text = "Connection lost";
-            //}
-
-            //Thread.Sleep(100);
-
         }
 
+        private void ResizeChart()
+        {
+            dp = chart1.Series[0].Points.FindMaxByValue("Y1", 0);
+            chart1.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
+
+            dp = chart1.Series[1].Points.FindMinByValue("Y1", 0);
+            chart1.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
+
+            dp = chart2.Series[0].Points.FindMaxByValue("Y1", 0);
+            chart2.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
+
+            dp = chart2.Series[0].Points.FindMinByValue("Y1", 0);
+            chart2.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
+
+            dp = chart2.Series[0].Points.FindMaxByValue("X", 0);
+            chart2.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue * 1.1) + 1;
+
+            dp = chart2.Series[0].Points.FindMinByValue("X", 0);
+            chart2.ChartAreas[0].AxisX.Minimum = Math.Sign(Math.Round(dp.XValue * Math.Abs(dp.XValue))) * 1.1 - 1;
+        }
 
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
         {
@@ -792,7 +628,7 @@ namespace CLADAQ
                     }   
                     if ((intCount % 100)==0)
                     { bDisp = true; }
-                    Thread.Sleep(50);
+                    //Thread.Sleep(50);
 
                 }
                 if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
@@ -946,7 +782,7 @@ namespace CLADAQ
 
         }
 
-        private async void btnOPCConnect_Click(object sender, EventArgs e)
+        private void btnOPCConnect_Click(object sender, EventArgs e)
         {
 
             //await connectOPC();
@@ -1000,3 +836,61 @@ namespace CLADAQ
     }
 }
 
+
+
+// Example do PLC task
+// [remove here]
+//if (PLC_Con.IsConnected)
+//{
+//    switch (job_Nr)
+//    {
+//        case 1:      //read variables
+
+//            Diagnosis diagnosis = PLC_Con.System.GetDisplayedDiagnosis();
+//            // add timestamp
+//            string strFormattedOutput = "";
+//            strFormattedOutput += "Time: "
+//                + diagnosis.dateTime.day.ToString("00") + "."
+//                + diagnosis.dateTime.month.ToString("00") + "."
+//                + diagnosis.dateTime.year.ToString("00") + " - "
+//                + diagnosis.dateTime.minute.ToString("00") + ":"
+//                + diagnosis.dateTime.hour.ToString("00") + ":"
+//                + diagnosis.dateTime.second.ToString("00") + System.Environment.NewLine;
+//            // add current state
+//            strFormattedOutput += "State: " + diagnosis.state.ToString() + System.Environment.NewLine;
+//            // add dispatcher of diagnosis
+//            strFormattedOutput += "Despatcher: " + diagnosis.despatcher.ToString() + System.Environment.NewLine;
+//            // add error number
+//            strFormattedOutput += "Number: 0x" + String.Format("{0:X}", diagnosis.number) + System.Environment.NewLine;
+//            // add description
+//            strFormattedOutput += "Text: " + diagnosis.text;
+//            // print to console
+//            //Console.WriteLine(strFormattedOutput);
+//            FormTools.AppendText(this, tbLog, strFormattedOutput + Environment.NewLine);
+
+//            break;
+
+//        case 2:     //'Write variable - par = "Application.GVL_x.var_x"
+
+//            try
+//            {
+//                string strPar = Convert.ToString(Par);
+//                PLC_Con.Logic.WriteVariableBySymbol(strPar, Data);
+//                FormTools.AppendText(this, tbLog, "> PLC motion started succesfull." + Environment.NewLine);
+//            }
+//            catch (Exception ex)
+//            {
+//                FormTools.AppendText(this, tbLog, "> Could not start motion on PLC." + Environment.NewLine);
+
+//            }
+
+
+
+//            break;
+//    }
+
+//}
+//else
+//{
+
+//}

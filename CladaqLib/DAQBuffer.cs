@@ -8,8 +8,7 @@ using System.IO; //StreamWriter
 using System.Globalization; //CultureInfo
 using CLADAQ;
 using System.Threading.Tasks; //Async tasks
-
-
+using System.Web.UI;
 
 public class DAQBuffer
     {
@@ -17,31 +16,35 @@ public class DAQBuffer
     //public fields
 
     public string CsvPath { get; set; }
-    public bool bWriting { get; set; }
+    public static bool bWriting { get; set; }
     //public bool bWriteFile { get; set; }
     //public int intNumBuffs { get; set; }            //number of buffers to use cyclically
-    public int intAcqBuffPos { get; set; }
-    public int intLastInd { get; set; }
-    public int intAcqS { get; set; }                //Maximum of samples in buffer before writing to file
+    public static int intAcqBuffPos { get; set; }
+    public static int intLastInd { get; set; }
+    public static int intAcqS { get; set; }                //Maximum of samples in buffer before writing to file
 
     //private fields
-    private List<DataRecord>[] listAcqBuffer;                 // data buffer to write
+    private static List<DataRecord>[] listAcqBuffer;                 // data buffer to write
     //private List<string> csvString;                           // CSV string to write (replaced by DataRecord)
 
-    public int intBuffs;
+    public static int intBuffs;
     
-    private bool writeCSV;
-    private int b_old;      //old buffer index
+    private static bool writeCSV;
+    
+    private static List<int> list_b_old = new List<int>(); //old buffer index
 
+    private static int b;          //buffer index
 
-    private int b;          //buffer index
+    private static string lasttime;
 
-    private string lasttime;
+    private static CsvWriter csv;
+    private static StreamWriter writer;
+    private static List<DataRecord> records;           // for CSV writer
+    private static List<DataRecord> listAcqReturn;     // for UI interaction
 
-    private CsvWriter csv;
-    private StreamWriter writer;
-    private List<DataRecord> records;           // for CSV writer
-    private List<DataRecord> listAcqReturn;     // for UI interaction
+    private static object objLock = new object();
+
+    private static Thread thread = new Thread(new ThreadStart(ThreadWriteRecords));
 
     // Constructor
     public DAQBuffer()
@@ -59,6 +62,9 @@ public class DAQBuffer
         {
             listAcqBuffer[i] = new List<DataRecord>();
         }
+
+        thread.Priority = ThreadPriority.Highest;
+        thread.Start(); //ToDo start,stop, and so on ...
     }
 
     // Public methods
@@ -106,6 +112,8 @@ public class DAQBuffer
     //public async Task<int> AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
     public int AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
     {
+        int b_old; //old buffer index  
+
         int intBuffS = dblAcqCh.GetLength(1);
         int NChan = dblAcqCh.GetLength(0);
         double FlowWatchTemp;
@@ -138,52 +146,85 @@ public class DAQBuffer
                 FlowWatch = FlowWatchTemp,                
                 PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US")),
                 PrintTime = localDate.ToString(@"HH\:mm\:ss\.FFFFFF", new CultureInfo("EN-US"))
-        });
+            });
         }
 
         intAcqBuffPos = intAcqBuffPos + intBuffS;
-
         intLastInd = listAcqBuffer[b].Count;
-        //DataRecord drLastDR = listAcqBuffer[b].ElementAt(intLastInd - 1);
-        //double dblLastVal = drLastDR.LaserPfdbck;
-
 
         if (listAcqBuffer[b].Count >= (intAcqS))       // write to CSV if CSV buffer is full
         {
-            
             b_old = b;
             b = b + 1;      //select new buffer for acquisition
             if (b > intBuffs - 1)
                 b = 0;
+            list_b_old.Add(b_old);    
+        }
+            
+        return 1;
+    }
 
-            lock (listAcqBuffer[b_old]) // only works in threads not timer called events
+
+    // Private methods
+    private static int WriteBuffer(List<DataRecord> records)
+    {
+        int intDone;
+        if (writer != null)
+        {
+            if (csv != null)
             {
-                listAcqReturn = new List<DataRecord>(listAcqBuffer[b_old]);
+                csv.WriteRecords(records);
+                csv.Flush();
+            }
+
+            intDone = 1;
+        }
+        else
+        {
+            intDone = 0; // no writer configured
+        }
+        return intDone;
+    }
+
+    private static void ThreadWriteRecords()
+    {
+        int b_old; //old buffer index  
+
+        while (true)
+        {
+            if (list_b_old.Count > 0)
+            {
+                b_old = list_b_old.ElementAt(0);
+
+                listAcqReturn = new List<DataRecord>(listAcqBuffer[b_old]);//ToDo, change and protect, right now ignoring this line
 
                 if (writeCSV) //if write to CSV make copy of buffer
                 {
                     bWriting = true;
-                    records = listAcqBuffer[b_old];
 
+                    records = listAcqBuffer[b_old];
+                 
                     int success = 0;
                     success = WriteBuffer(records);
-                    if (success>0)
+                    if (success > 0)
                     {
                         bWriting = false;
                     }
 
                 }
-                listAcqBuffer[b_old].RemoveRange(0, intAcqS);
+                //listAcqBuffer[b_old].RemoveRange(0, intAcqS);
+                listAcqBuffer[b_old].Clear();
+
+                list_b_old.RemoveAt(0);
             }
         }
-
-        return 1;
     }
 
-    public List<DataRecord> GetLastDataRecords()
+
+    public static List<DataRecord> GetLastDataRecords()
     {
         //returns the last values that was added to the buffer cycling through the cyclic buffers.
-        
+
         if (listAcqReturn != null)
         {
             if (listAcqReturn[1].DataTime != lasttime)
@@ -200,31 +241,8 @@ public class DAQBuffer
         else
         { return null; }
 
-        
+
     }
-
-    // Private methods
-    private int WriteBuffer(List<DataRecord> records)
-    {
-        int intDone;
-        if (writer != null)
-        {
-            if (csv != null)
-            {
-                csv.WriteRecords(records);
-                csv.Flush();
-            }
-
-            intDone = 1;
-        }
-        else
-        {
-            intDone =  0; // no writer configured
-        }
-        return intDone;
-    }
-
-    
 
 }
 

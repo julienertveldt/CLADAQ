@@ -93,7 +93,7 @@ namespace CladaqLib
             DateTime now = new DateTime();
             double nowS = new double();
 
-            intBuffS = daqBuff.intBuffs;
+            intBuffS = DAQBuffer.intBuffs;
 
             if (Values != null)
             // if not null check size and set size

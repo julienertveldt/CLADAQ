@@ -407,7 +407,7 @@ namespace CLADAQ
             dispTimer.Stop();
             
 
-            List<DataRecord> drDisp = daqBuff.GetLastDataRecords();
+            List<DataRecord> drDisp = DAQBuffer.GetLastDataRecords();
 
             if (drDisp != null)
             {
@@ -617,7 +617,7 @@ namespace CLADAQ
             {
                 int intCount = 0;
                 bool bDisp = true;
-                while (daqBuff.bWriting && intCount < 500)
+                while (DAQBuffer.bWriting && intCount < 500)
                 {
                     if (bDisp)
                     {
@@ -631,7 +631,7 @@ namespace CLADAQ
                     //Thread.Sleep(50);
 
                 }
-                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                if (DAQBuffer.bWriting == false) // wait for buffer to be written before closing.
                 {
                     daqAcq.Stop();
                     dispTimer.Stop();
@@ -698,7 +698,7 @@ namespace CLADAQ
             }
             else
             {
-                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                if (DAQBuffer.bWriting == false) // wait for buffer to be written before closing.
                 {
                     int res = daqBuff.CloseWriter();
                     writeCSV = false;

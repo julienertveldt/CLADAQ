@@ -4,19 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace CLADAQ
 {
     static class Program
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
+
+        
+
+        ///<summary>
+        /// Necessary for UI interfaces using COM components --> Single thread for UI
         [STAThread]
+        ///</summary>
         static void Main()
         {
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(false);      
             Application.Run(new CLADAQ());
         }
-    }
+    }   
 }

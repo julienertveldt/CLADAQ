@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CAD>
+     <Path>C:/data/123.step</Path>
+     <WorkignPath>c:/data/working/123.ipt</WorkignPath>
+     <Date>10/07/2020</Date>
+     <Version>1.0</Version>
+     <Engineer refid="user_julien.xml"/>
+     <Parent/>
+     <Properties>
+                 <Properties:Weight>10</Properties:Weight>
+                 <Properties:Weight-units>g</Properties:Weight-units>
+                 <Properties:Material idref="material-316L-0001.xml"/>
+     </Properties>
+     
+</CAD>
+

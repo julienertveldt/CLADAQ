@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Part fileName="000001" xmlns:xi="http://www.w3.org/2001/XInclude">
+      <Status>StatusValue</Status>
+      <xi:include href="CAD_000001.xml" xpointer="CAD"/>
+      <CAM>
+           <xi:include href="CAM_000001.xml"/>
+      </CAM>
+      <NC refid="NC_000001.xml"/>
+      <Engineer refid="user_julien.xml"/>
+      <Operator refid="user_julien.xml"/>
+      <Designer refid="user_julien.xml"/>
+      <Project refid="project_julien.xml"/>
+      <CAMEngineer refid="user_julien.xml"/>
+      <ProductionDate>10/07/2020</ProductionDate>
+      <ProductionTime>09:46:10</ProductionTime>
+      <PrintConfig refid="config-addition_000001.xml"/>
+      <MillConfig refid ="config-milling_000001.xml" />
+</Part>
+
+
+

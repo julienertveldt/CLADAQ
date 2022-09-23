@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 namespace CladaqLib
 {
-    public class DAQ : INotifyPropertyChanged
+    public class DAQ
     {
         static private MlpiConnection PLC_Con = new MlpiConnection();
 
@@ -40,37 +40,38 @@ namespace CladaqLib
         public double dblAcqDelay { get; set; }
         public bool bRunning { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        static Thread thread;
 
-        static Thread thread = new Thread(new ThreadStart(ThreadMain));
-
-        public DAQ(DAQBuffer daqBuffIn, int intBuffSIn, uint intNChIn, uint intAcqDelayIn)
+        public DAQ(DAQBuffer daqBuffIn, int intBuffSIn, uint intNChIn, uint intAcqDelayIn, string strTypeIn)
         {
-            intBuffS = intBuffSIn;
-            intNCh = intNChIn;
-            intAcqDelay = intAcqDelayIn;
+            if (thread == null) //ToDo singleton class for single threading for both eth protocols: mlpi & MTX
+            {
+                thread = new Thread(new ThreadStart(ThreadMain));
+                thread.Priority = ThreadPriority.AboveNormal;
 
-            dblAcqCh = new double[intNCh, intBuffS];
-            dblCh1 = new double[intBuffS];                             // Pos X
-            dblCh2 = new double[intBuffS];                             // Pos Y
-            dblCh3 = new double[intBuffS];                             // Pos Z
-            dblCh4 = new double[intBuffS];                             // Vel cmd
-            dblCh5 = new double[intBuffS];                             // Laser Cmd
-            dblCh6 = new double[intBuffS];                             // Laser Fdbck
-            dblCh7 = new double[intBuffS];                             // Medicoat FlowWatch
-            uiTime = new UInt64[intBuffS];
+                intBuffS = intBuffSIn;
+                intNCh = intNChIn;
+                intAcqDelay = intAcqDelayIn;
 
-            // define buffers comming from MLPI
-            dblPosBuff = new double[intBuffS, intNCh];            // CNC positions + laser channel
-            strTimeBuff = new string[intBuffS];                        // CNC timestamp
-            intTimeBuff = new UInt64[intBuffS];
-            intTimeBuffOld = new UInt64[intBuffS];                     //previous cnc timestamp
-            strDateBuff = new string[intBuffS];
+                dblAcqCh = new double[intNCh, intBuffS];
+                dblCh1 = new double[intBuffS];                             // Pos X
+                dblCh2 = new double[intBuffS];                             // Pos Y
+                dblCh3 = new double[intBuffS];                             // Pos Z
+                dblCh4 = new double[intBuffS];                             // Vel cmd
+                dblCh5 = new double[intBuffS];                             // Laser Cmd
+                dblCh6 = new double[intBuffS];                             // Laser Fdbck
+                dblCh7 = new double[intBuffS];                             // Medicoat FlowWatch
+                uiTime = new UInt64[intBuffS];
 
-            daqBuff = daqBuffIn;
+                // define buffers comming from MLPI
+                dblPosBuff = new double[intBuffS, intNCh];            // CNC positions + laser channel
+                strTimeBuff = new string[intBuffS];                        // CNC timestamp
+                intTimeBuff = new UInt64[intBuffS];
+                intTimeBuffOld = new UInt64[intBuffS];                     //previous cnc timestamp
+                strDateBuff = new string[intBuffS];
 
-            thread.Priority = ThreadPriority.AboveNormal;
-   
+                daqBuff = daqBuffIn;               
+            }
         }
 
         private static void ThreadMain() 

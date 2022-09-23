@@ -14,6 +14,11 @@ namespace CladaqLib
         public static int intDispDelay { get; private set; }
         public static int intPlotS { get; private set; }
         public static int intPlotSkip { get; private set; }
+        public static uint intMTXDelay { get; private set; }                // ms refresh rate for MTX status
+
+ 
+        public static string strMTXOPCIP { get; private set; }
+        public static string strMLPIIP { get; private set; }        
 
 
         public static void InitializeApp()
@@ -26,11 +31,16 @@ namespace CladaqLib
             intNumBuffs = 20;                        // number of (cyclic) buffers to use.
             intSimFS = 500;                          // Simulation frequency
             intNCh = 6;
+            intMTXDelay = 100;                      
 
             // GUI Settings;
             intDispDelay = 100;                         // ms delay for screen refresh
             intPlotS = 200;                           // number of points to plot
             intPlotSkip = 10;                          // plot 1 out of X samples
+
+            // connection info;
+            strMTXOPCIP = "opc.tcp://192.168.142.250:4840/";
+            strMLPIIP = "192.168.142.3";
     }
 
     }

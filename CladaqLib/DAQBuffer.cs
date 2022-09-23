@@ -118,7 +118,6 @@ public class DAQBuffer
         int intBuffS = dblAcqCh[0].Length; // all channels have same length, we take the 1st one
         int NChan = dblAcqCh.Count;
         double FlowWatchTemp;
-        DateTime now = DateTime.Today;
 
         for (int i = 0; i < intBuffS; i++)
         {

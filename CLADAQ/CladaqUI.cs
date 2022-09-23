@@ -53,10 +53,11 @@ namespace CLADAQ
 
         private static string strFilePath = "C:/temp/test.csv";     
 
-        private static OpcClient clientMTX = new OpcClient("opc.tcp://192.168.142.250:4840/");
-
-        public static DAQBuffer daqBuff;
-        public static DAQ daqAcq;
+        public static DAQBuffer buffAcq;    // High speed NC data buffer + writer
+        public static DAQBuffer buffOPC;    // Lows speed OPC-UA MTX data buffer + writer
+                        
+        public static DAQ daqAcq;           // MTX --> XM21 --> Socket PC for high speed data from NC
+        public static DAQ daqOPC;           // OPC-UA connection with MTX for low rate data (temp, NC block, ...)
         public static Simulator simData;
 
         // Display GUI static fields
@@ -154,7 +155,7 @@ namespace CLADAQ
             lbBar17.Text = "PFR (%)";
             cpBar18.Text = "";
             lbBar18.Text = "Shielding (l/min)";
-            tb_Ip_Address.Text = "192.168.142.3";
+            tb_Ip_Address.Text = Global.strMLPIIP;
             cpBar19.Text = "";
             lbBar19.Text = "Carrier (l/min)";
             cpBar19.Maximum = 25;
@@ -229,11 +230,12 @@ namespace CLADAQ
 
             Browser.PopulateTreeView(this.treeView2);
 
-            daqBuff = new DAQBuffer(intNumBuffs, intAcqS);                      // buffer for CSV writing
+            buffAcq = new DAQBuffer(intNumBuffs, intAcqS);                      // buffer for CSV writing
 
-            daqAcq = new DAQ(daqBuff, intBuffS, intNCh, Global.intAcqDelay);    //acquisition buffer 
+            daqAcq = new DAQ(buffAcq, intBuffS, intNCh, Global.intAcqDelay, "mlpi");    //acquisition buffer for MLPI socket
+            daqOPC = new DAQ(buffOPC, intBuffS, intNCh, Global.intMTXDelay, "MTX");     // acquisition buffer for MTX OPC-UA connection
 
-            simData = new Simulator(daqBuff);
+            simData = new Simulator(buffAcq);
             simData.dblSimDelay = 20;
 
             lbStatus.Text = "Ready ...";
@@ -315,11 +317,8 @@ namespace CLADAQ
             {
                 simData.Close();
                 daqAcq.Close();
-
-                if (clientMTX != null)
-                {
-                    clientMTX.Disconnect();
-                }
+                daqOPC.Close();
+                
                 //csv.Flush();
                 //csv.Dispose();
 
@@ -407,13 +406,13 @@ namespace CLADAQ
             dispTimer.Stop();
             
 
-            List<DataRecord> drDisp = daqBuff.GetLastDataRecords();
+            List<DataRecord> drDisp = buffAcq.GetLastDataRecords();
 
             if (drDisp != null)
             {
                 string time = drDisp[drDisp.Count-1].DataTime;
                 TimeSpan t1 = GlobalUI.sw.Elapsed;
-                FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"ss\:fffffff\.") + " : Time of acq value. " + time.ToString() + Environment.NewLine);
+                FormTools.AppendText(this, tbLog, "> " + t1.ToString(@"mm\:ss\:ff\.") + " : Acq. time " + time.ToString() + Environment.NewLine);
             
 
             string[] strTimeBuff = { };
@@ -438,11 +437,14 @@ namespace CLADAQ
                         //chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].PosY); //dblCh2
 
                         // Vel & Power
-                        chart1.Series[0].Points.AddXY(dp.XValue + 1, drDisp[i].VelCmd * 6 / 1000); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
-                        chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].LaserPcmd); //dblCh2
+                        chart1.Series[0].Points.AddXY(dp.XValue + 1, drDisp[i].VelCmd ); //dblCh1 dblAcqCh[1-1,i] * 6 / 1000
+                        chart1.Series[1].Points.AddXY(dp.XValue + 1, drDisp[i].LaserPfdbck); //dblCh2
 
                         // Chart 2: XY plot
-                        chart2.Series[0].Points.AddXY(drDisp[i].PosX, drDisp[i].PosY);
+                        if ((i % 100) == 0)
+                        {
+                            chart2.Series[0].Points.AddXY(drDisp[i].PosX, drDisp[i].PosY);
+                        }
 
                     }
                 }
@@ -490,56 +492,16 @@ namespace CLADAQ
 
                 dp = chart1.Series[0].Points.FindMinByValue("X", 0);
                 chart1.ChartAreas[0].AxisX.Minimum = Math.Round(dp.XValue);
-
                 
             }
             catch (Exception exc)
             { }
 
             // OPCUA display --> To be moved in new DAQBuffer object
-
-            if (bClientMTXConnected == true)
-            {
-                var statusNode = clientMTX.BrowseNode("ns=27;s=NC.CplPermVariable,@CG") as OpcVariableNodeInfo;
-
-                if (statusNode != null)
-                {
-                    var statusValues = statusNode.DataType.GetEnumMembers();
-
-                    var currentStatus = clientMTX.ReadNode(statusNode.NodeId);
-                    var currentStatusValue = null as OpcEnumMember;
-
-                    foreach (var statusValue in statusValues)
-                    {
-                        if (statusValue.Value == currentStatus.As<int>())
-                        {
-                            currentStatusValue = statusValue;
-                            break;
-                        }
-                    }
-
-                    int intCG = currentStatus.As<int>();
-                    cpBar19.Value = intCG;
-                    cpBar19.Text = intCG.ToString();
-                   // string msg = String.Format("Current carrier gas setpoint is {0} L/min", intCG);
-                   // FormTools.AppendText(this, tbLog, "> " + msg + Environment.NewLine);
-                }
-
-                try
-                {
-                    var dummy = clientMTX.ReadNode("ns=27;s=NC.Chan.ActCallChain,01,FilePosition"); // array
-                    //var dummy = clientMTX.ReadNode("ns=27;s=NC.Chan.ActCallChain,01,BlockNo");
-                    int[] intValues = (int[])dummy.Value;
-                    lblOPCVal1.Text = intValues[0].ToString();
-                    
-
-
-                    var dum3 = clientMTX.ReadNode("ns=27;s=NC.Chan.ActNcBlock,01");
-                    lblOPCVal2.Text = dum3.ToString();
-                }
-                catch (Exception ex)
-                { }
-            }
+            //lblOPCVal2.Text = dum3.ToString();
+            //lblOPCVal1.Text = intValues[0].ToString();
+            //cpBar19.Value = intCG;
+            //cpBar19.Text = intCG.ToString();
 
 
             if (bDebugLog)
@@ -560,22 +522,22 @@ namespace CLADAQ
         private void ResizeChart()
         {
             dp = chart1.Series[0].Points.FindMaxByValue("Y1", 0);
-            chart1.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
+            chart1.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0]) + 10;
 
             dp = chart1.Series[1].Points.FindMinByValue("Y1", 0);
-            chart1.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
+            chart1.ChartAreas[0].AxisY.Minimum = Math.Round(dp.YValues[0]) - 10;
 
             dp = chart2.Series[0].Points.FindMaxByValue("Y1", 0);
-            chart2.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0] * 1.1) + 1;
+            chart2.ChartAreas[0].AxisY.Maximum = Math.Round(dp.YValues[0]) + 10;
 
             dp = chart2.Series[0].Points.FindMinByValue("Y1", 0);
-            chart2.ChartAreas[0].AxisY.Minimum = Math.Sign(Math.Round(dp.YValues[0]) * Math.Abs(dp.YValues[0])) * 1.1 - 1; //-0.001 quick fix to avoid Ymin = Ymax
+            chart2.ChartAreas[0].AxisY.Minimum = Math.Round(dp.YValues[0]) - 10;
 
             dp = chart2.Series[0].Points.FindMaxByValue("X", 0);
-            chart2.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue * 1.1) + 1;
+            chart2.ChartAreas[0].AxisX.Maximum = Math.Round(dp.XValue) + 10;
 
             dp = chart2.Series[0].Points.FindMinByValue("X", 0);
-            chart2.ChartAreas[0].AxisX.Minimum = Math.Sign(Math.Round(dp.XValue * Math.Abs(dp.XValue))) * 1.1 - 1;
+            chart2.ChartAreas[0].AxisX.Minimum = Math.Round(dp.XValue) - 10;
         }
 
         private void cbSimulate_CheckedChanged(object sender, EventArgs e)
@@ -617,7 +579,7 @@ namespace CLADAQ
             {
                 int intCount = 0;
                 bool bDisp = true;
-                while (daqBuff.bWriting && intCount < 500)
+                while (buffAcq.bWriting && intCount < 500)
                 {
                     if (bDisp)
                     {
@@ -631,7 +593,7 @@ namespace CLADAQ
                     //Thread.Sleep(50);
 
                 }
-                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                if (buffAcq.bWriting == false) // wait for buffer to be written before closing.
                 {
                     daqAcq.Stop();
                     dispTimer.Stop();
@@ -684,7 +646,7 @@ namespace CLADAQ
                 //csv = new CsvWriter(writer, CultureInfo.InvariantCulture);
                 //;
 
-                int res = daqBuff.StartWriter(strFilePath);
+                int res = buffAcq.StartWriter(strFilePath);
 
                 if (res > 0)
                 { 
@@ -698,9 +660,9 @@ namespace CLADAQ
             }
             else
             {
-                if (daqBuff.bWriting == false) // wait for buffer to be written before closing.
+                if (buffAcq.bWriting == false) // wait for buffer to be written before closing.
                 {
-                    int res = daqBuff.CloseWriter();
+                    int res = buffAcq.CloseWriter();
                     writeCSV = false;
                     FormTools.AppendText(this, tbLog, ">  CSV stream closed at: " + strFilePath + Environment.NewLine);
                 }
@@ -785,44 +747,12 @@ namespace CLADAQ
         private void btnOPCConnect_Click(object sender, EventArgs e)
         {
 
-            //await connectOPC();
-
-            //tbLog.Refresh();
-
-            // Configuration property.
-            clientMTX.Configuration.ClientConfiguration.DefaultSessionTimeout = 10000; // 10s
-            clientMTX.Configuration.SecurityConfiguration.AutoAcceptUntrustedCertificates = true;
-
-
-            //load existing certificate
-            //var certificate = OpcCertificateManager.LoadCertificate(@"D:\OneDrive - Vrije Universiteit Brussel\Soft-dev\CLADAQ\opc-info\certs\CLADAQ.der");
-
-            //generate new certificate
-            var certificate = OpcCertificateManager.CreateCertificate(clientMTX);
-
-            //Save a certificate in any path:
-
-            OpcCertificateManager.SaveCertificate("CLADAQcert.der", certificate);
-
-            //Set the Client certificate:
-            clientMTX.Certificate = certificate;
-
-            //The certificate has to be stored in the Application Store:
-
-            if (!clientMTX.CertificateStores.ApplicationStore.Contains(certificate))
-                clientMTX.CertificateStores.ApplicationStore.Add(certificate);
-
-            //If no or an invalid certificate is used, a new certificate is generated / used by default.If the Client shall only use the mentioned certificate this function has to be deactivated.For deactivating the function set the property AutoCreateCertificate to the value false:
-
-            clientMTX.CertificateStores.AutoCreateCertificate = true;
-
-
-            //try
-            //{
-                clientMTX.Connect();
+            bool success = daqOPC.Connect(Global.strMTXOPCIP);
+            if (success)
+            {
                 lblOPCStatus.Text = "Connected to MiCLAD ";
                 bClientMTXConnected = true;
-
+            }
 
             // }
             // catch (Exception ex)

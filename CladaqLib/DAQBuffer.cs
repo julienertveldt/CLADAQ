@@ -110,12 +110,13 @@ public class DAQBuffer
     }
 
     //public async Task<int> AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
-    public int AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
+    //public int AppendToBuffer(double[,] dblAcqCh, UInt64[] TimeBuff)
+    public int AppendToBuffer(List<double[]> dblAcqCh, UInt64[] TimeBuff)
     {
         int b_old; //old buffer index  
 
-        int intBuffS = dblAcqCh.GetLength(1);
-        int NChan = dblAcqCh.GetLength(0);
+        int intBuffS = dblAcqCh[0].Length; // all channels have same length, we take the 1st one
+        int NChan = dblAcqCh.Count;
         double FlowWatchTemp;
         DateTime now = DateTime.Today;
 
@@ -123,7 +124,7 @@ public class DAQBuffer
         {
             if (NChan > 6)
             {
-                FlowWatchTemp = dblAcqCh[6, i];
+                FlowWatchTemp = dblAcqCh[6][i];
             }
             else
             {
@@ -134,14 +135,14 @@ public class DAQBuffer
 
             listAcqBuffer[b].Add(new DataRecord
             {
-                PosX = dblAcqCh[0, i],
-                PosY = dblAcqCh[1, i],
-                PosZ = dblAcqCh[2, i],
+                PosX = dblAcqCh[0][i],
+                PosY = dblAcqCh[1][i],
+                PosZ = dblAcqCh[2][i],
                 PosB = 0,
                 PosC = 0,
-                VelCmd = dblAcqCh[3, i],
-                LaserPcmd = dblAcqCh[4, i],
-                LaserPfdbck = dblAcqCh[5, i],
+                VelCmd = dblAcqCh[3][i],
+                LaserPcmd = dblAcqCh[4][i],
+                LaserPfdbck = dblAcqCh[5][i],
                 DataTime = TimeBuff[i].ToString(),
                 FlowWatch = FlowWatchTemp,                
                 PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US")),

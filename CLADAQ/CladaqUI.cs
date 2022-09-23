@@ -461,6 +461,7 @@ namespace CLADAQ
                 chart2.Series[0].Points.RemoveAt(0);
             }
 
+            bAutoSize = false; // ToDo check why autosize fails
             if (bAutoSize)
             {
                 try

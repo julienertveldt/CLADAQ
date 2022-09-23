@@ -83,23 +83,18 @@ namespace CladaqLib
 
                     if ((uiTime.SequenceEqual(intTimeBuffOld)) == false)
                     {
-                        double[] tempBuf = new double[intBuffS];
+                        List<double[]> dblAcqCh = new List<double[]>();
+
                         for (int ii = 1; ii < (intNCh + 1); ii += 1)
                         {
-                            string dummyPath = "Application.PlcVarGlobal.reBuf" + ii.ToString() + "_Sent_gb";
-
-                            tempBuf = PLC_Con.Logic.ReadVariableBySymbol(dummyPath);
-                            System.Buffer.BlockCopy(tempBuf, 0, dblAcqCh, intBuffS * (ii - 1) * 8, intBuffS * 8);
-                        }
-
-                        for (int i = 0; i < intBuffS; i += 1)
-                        {
-                            intTimeBuff[i] = uiTime[i];
+                            string dummyPath = "Application.PlcVarGlobal.reBuf" + ii.ToString() + "_Sent_gb"; 
+                            // each reading gets a channel
+                            dblAcqCh.Add(PLC_Con.Logic.ReadVariableBySymbol(dummyPath));
                         }
 
                         intTimeBuffOld = uiTime;
 
-                        daqBuff.AppendToBuffer(dblAcqCh, intTimeBuff);
+                        daqBuff.AppendToBuffer(dblAcqCh, uiTime);
 
                     }                    
                 }

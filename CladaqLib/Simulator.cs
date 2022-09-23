@@ -139,7 +139,8 @@ namespace CladaqLib
                 {
                     if (daqBuff != null)
                     {
-                        daqBuff.AppendToBuffer(dblBuff, intTimeBuff);
+                        // ToDo simulator
+                        //daqBuff.AppendToBuffer(dblBuff, intTimeBuff);
                         //intTimeBuff = null;
                         //dblBuff = null;
                     }

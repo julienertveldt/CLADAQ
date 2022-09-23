@@ -75,27 +75,27 @@ namespace CladaqLib
 
         private static void ThreadMain() 
         {
+            List<double[]> dblAcqCh;
+
             while (true)
             {
                 if (PLC_Con.IsConnected) //&& blPLCRunning
                 {
                     uiTime = PLC_Con.Logic.ReadVariableBySymbol("Application.PlcVarGlobal.tTimeBufSent_gb");//tTimeBuf1_gb
 
-                    if ((uiTime.SequenceEqual(intTimeBuffOld)) == false)
+                    if (uiTime.SequenceEqual(intTimeBuffOld) == false)
                     {
-                        List<double[]> dblAcqCh = new List<double[]>();
+                        dblAcqCh = new List<double[]>();
 
-                        for (int ii = 1; ii < (intNCh + 1); ii += 1)
+                        for (int ii = 1; ii < (intNCh + 1); ii += 1) // read channel by channel
                         {
                             string dummyPath = "Application.PlcVarGlobal.reBuf" + ii.ToString() + "_Sent_gb"; 
-                            // each reading gets a channel
                             dblAcqCh.Add(PLC_Con.Logic.ReadVariableBySymbol(dummyPath));
                         }
 
-                        intTimeBuffOld = uiTime;
-
                         daqBuff.AppendToBuffer(dblAcqCh, uiTime);
 
+                        intTimeBuffOld = uiTime;
                     }                    
                 }
             }

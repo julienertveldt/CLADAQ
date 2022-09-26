@@ -77,8 +77,8 @@ namespace CLADAQ
 
         // plot options
         protected bool bPlotOn = false;
-        private bool bAutoSize = true;
-        private double dblYMax = 10;
+        private bool bAutoSize = false;
+        private double dblYMax = 1000;
         private double dblYMin = 0;
 
         private DataPoint dp = new DataPoint();

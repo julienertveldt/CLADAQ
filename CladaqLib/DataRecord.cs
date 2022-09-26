@@ -22,5 +22,7 @@ namespace CLADAQ
         public double LaserPcmd { get; set; }
         public double LaserPfdbck { get; set; }
         public double FlowWatch { get; set; }
+        public double OCT { get; set; }
+        public double Temp { get; set; }
     }
 }

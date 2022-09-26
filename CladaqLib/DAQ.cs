@@ -115,7 +115,7 @@ namespace CladaqLib
                         dummyPath = "Application.PlcVarGlobal.reBuf" + ii.ToString() + "_Sent_gb";
 
                         tempBuf = PLC_Con.Logic.ReadVariableBySymbol(dummyPath);
-                        System.Buffer.BlockCopy(tempBuf, 0, dblAcqCh, intBuffS * (ii - 1) * 8, intBuffS * 8);
+                        System.Buffer.BlockCopy(tempBuf, 0, dblAcqCh, intBuffS * (ii - 1) * 8, intBuffS * 8);   
                     }
 
                     //temporary fix to avoid Null strTimeBuff

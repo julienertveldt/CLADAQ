@@ -115,7 +115,7 @@ public class DAQBuffer
         {
             if (NChan > 6)
             {
-                FlowWatchTemp = dblAcqCh[6, i];
+                FlowWatchTemp = dblAcqCh[8, i];
             }
             else
             {
@@ -135,7 +135,9 @@ public class DAQBuffer
                 LaserPcmd = dblAcqCh[4, i],
                 LaserPfdbck = dblAcqCh[5, i],
                 DataTime = TimeBuff[i].ToString(),
-                FlowWatch = FlowWatchTemp,                
+                FlowWatch = FlowWatchTemp,
+                OCT = dblAcqCh[7, i],
+                Temp = dblAcqCh[6,i],
                 PrintDate = localDate.ToString(@"yyyy-MM-dd", new CultureInfo("EN-US")),
                 PrintTime = localDate.ToString(@"HH\:mm\:ss\.FFFFFF", new CultureInfo("EN-US"))
         });

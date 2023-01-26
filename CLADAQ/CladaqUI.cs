@@ -450,19 +450,6 @@ namespace CLADAQ
                 }
             }
 
-            for (int i = 0; i < chart1.Series.Count; i++)
-            {
-                while (chart1.Series[i].Points.Count > intPlotS)
-                {
-                    chart1.Series[i].Points.RemoveAt(0);
-                }
-            }
-
-            while (chart2.Series[0].Points.Count > intPlotS)
-            {
-                chart2.Series[0].Points.RemoveAt(0);
-            }
-
             if (bAutoSize)
             {
                 try
@@ -478,11 +465,27 @@ namespace CLADAQ
                 chart1.ChartAreas[0].AxisY.Maximum = dblYMax;
                 chart1.ChartAreas[0].AxisY.Minimum = dblYMin;
 
-                chart2.ChartAreas[0].AxisY.Maximum = 1600;
-                chart2.ChartAreas[0].AxisY.Minimum = 0;
-                chart2.ChartAreas[0].AxisX.Maximum = 800;
-                chart2.ChartAreas[0].AxisX.Minimum = 0;
+                chart2.ChartAreas[0].AxisY.Maximum = -1000;
+                chart2.ChartAreas[0].AxisY.Minimum = -1400;
+                chart2.ChartAreas[0].AxisX.Maximum = 600;
+                chart2.ChartAreas[0].AxisX.Minimum = 200;
             }
+
+
+            for (int i = 0; i < chart1.Series.Count; i++)
+            {
+                while (chart1.Series[i].Points.Count > intPlotS)
+                {
+                    chart1.Series[i].Points.RemoveAt(0);
+                }
+            }
+
+            while (chart2.Series[0].Points.Count > intPlotS)
+            {
+                chart2.Series[0].Points.RemoveAt(0);
+            }
+
+
 
             try
             {

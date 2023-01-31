@@ -39,7 +39,7 @@ namespace CladaqLib
         private double[,] dblBuff;
 
         private System.Timers.Timer timer;
-        private int intNCh = 6;
+        private int intNCh = 9;      
 
 
 
@@ -129,8 +129,10 @@ namespace CladaqLib
                 dblBuff[3, i] = 0; // dblPosBuff[i, 3];
                 dblBuff[4, i] = 0; //dblPosBuff[i, 4];
                 dblBuff[5, i] = 0; //dblPosBuff[i, 5];
+                dblBuff[6, i] = 1750 + Convert.ToUInt64(nowS * 1000)/1000;
+                dblBuff[7, i] = 4 + Convert.ToUInt64(nowS * 1000) / 1000;
+                dblBuff[8, i] = 1.0 + Convert.ToUInt64(nowS * 1000) / 1000;
 
-                
             }
 
             lock (dblBuff)
